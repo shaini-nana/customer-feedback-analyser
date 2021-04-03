@@ -13,7 +13,7 @@ This tool consists of 3 individual components as stated below:
 
 Further in order to view the final analytical results run the frontend application on your local machine.
 Instructions can be found in the section - 
-[How To Run the Customer Feedback Analyzer Web Application](#How To Run the Customer Feedback Analyzer Web Application)
+[How To Run the Customer Feedback Analyzer Web Application](#https://github.com/shaini-nana/customer-feedback-analyser#how-to-run-the-customer-feedback-analyzer-web-application)
 
 # How To Execute Data Scraper
 

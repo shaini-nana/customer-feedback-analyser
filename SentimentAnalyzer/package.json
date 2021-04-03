@@ -1,0 +1,19 @@
+{
+  "name": "sentiment-analyzer",
+  "version": "1.0.0",
+  "description": "Sentiment Analyzer",
+  "main": "./sentimentAnalyzer.js",
+  "scripts": {
+    "start": "node ./sentimentAnalyzer.js"
+  },
+  "engines": {
+    "node": ">=12.10.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.878.0",
+    "csv-parse": "^4.15.3",
+    "csv-parser": "^3.0.0",
+    "fas": "^0.3.6"
+  },
+  "devDependencies": {}
+}
