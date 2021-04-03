@@ -36,18 +36,13 @@ for row in reviewReader:
 for reviewCategories in reviews:
     if len(reviewCategories) != 0:
         isCategorizedReviews = bool(10)
+        break
 
 
 if isCategorizedReviews:
     print("Filtered food reviews found")
+    # create preprocessed reviews directory
+    # create individual files in the directory
+    # write data to each file
 else:
     print("Filtered food reviews not found")
-
-
-# print(isCategorizedReviews)
-# print("======== Filtered Food Reviews ========")
-# print(len(reviews[0]))
-# print(len(reviews[1]))
-# for reviewCategories in reviews:
-#     for review in reviewCategories:
-#         print(review)
