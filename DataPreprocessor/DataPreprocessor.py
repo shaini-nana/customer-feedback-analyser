@@ -1,35 +1,53 @@
 import csv
 import nltk
-nltk.download('punkt')
 
+nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+
 reviewFile = open('DataScraper/reviews_01.csv')
 reviewReader = csv.reader(reviewFile)
 
+# @todo improve the food items list to be in line with scraped reviews
 foodItems = ["burger", "pizza"]
+# @todo initializing food item related reviews array
 reviews = [[],[]]
 
+isCategorizedReviews = bool(0)
+
+print("======= Start reading through the reviews =======")
 # looping through the reviews csv
 for row in reviewReader:
-    print("Sentences in Review Number ", row[0])
-    print("=====================")
 
     # obtaining each review
     review = (row[0].strip().split('\t'))[0]
-    # splitting the sentences of the review
+    # splitting the sentences of each review
     reviewSentences = tokenizer.tokenize(review)
 
-    for index, reviewSentence in enumerate(reviewSentences):
-        processedReview = reviewSentence.lower()
-        print("Sentence: ", index, ": ", processedReview)
+    # looping through each sentence of the focused review
+    for reviewSentence in reviewSentences:
+        processedSentence = reviewSentence.lower()
 
+        # looping each review sentence through each food item
+        # to check if the review sentence is about any of the identified food items
         for inx, foodItem in enumerate(foodItems):
-            print(foodItem)
-            if foodItem in  processedReview:
-                reviews[inx].append(processedReview)
-                print('word matched')
+            if foodItem in  processedSentence:
+                reviews[inx].append(processedSentence)
 
-print("======== Filtered Food Reviews ========")
 for reviewCategories in reviews:
-    for review in reviewCategories:
-        print(review)
+    if len(reviewCategories) != 0:
+        isCategorizedReviews = bool(10)
+
+
+if isCategorizedReviews:
+    print("Filtered food reviews found")
+else:
+    print("Filtered food reviews not found")
+
+
+# print(isCategorizedReviews)
+# print("======== Filtered Food Reviews ========")
+# print(len(reviews[0]))
+# print(len(reviews[1]))
+# for reviewCategories in reviews:
+#     for review in reviewCategories:
+#         print(review)
