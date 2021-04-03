@@ -1,5 +1,8 @@
 # Customer Feedback Analyser
-Automating Text-Based Customer Feedback Analysis to Derive Business Analytics
+Automating Text-Based Customer Feedback Analysis to Derive Business Analytics.
+Important business analytics will be provided under the below mentioned aspects:
+- Analytics on the overall business reviews
+- Analytics on each food item reviews
 
 # Technologies and Languages
 - Python
@@ -11,9 +14,7 @@ This tool consists of 3 individual components as stated below:
 - Data Preprocessor
 - Sentiment Analyzer
 
-Further in order to view the final analytical results run the frontend application on your local machine.
-Instructions can be found in the section - 
-[How To Run the Customer Feedback Analyzer Web Application](#https://github.com/shaini-nana/customer-feedback-analyser#how-to-run-the-customer-feedback-analyzer-web-application)
+Further in order to view the final analytical results run the `Customer Feedback Analyzer Web Application` on your local machine.
 
 # How To Execute Data Scraper
 
@@ -31,8 +32,17 @@ This needs to be entered as array items to the variable `foodItems` in the `Data
     python3 DataPreprocessor/DataPreprocessor.py
 ``
 
+- Step 5: Filtered reviews will be grouped based on the provided food items.
+Food item wise grouped reviews will be found in a directory created within the `DataPreprocessor` directory.
+This will be only created if the reviews were relating to any of the provided food items.
+
 # How To Execute Sentiment Analyzer
 - Step 1: Be on the project root location (`/customer-feedback-analyser`) and execute the following command to move in to the `SentimentAnalyzer` directory.
 `cd SentimentAnalyzer/`
+
+- Step 2: Install the required node modules to run the `SentimentAnalyzer` by running the below command.
+`yarn`
+
+- Step 3: Create AWS account, login to it and obtain the AWS keys which needs to be added to the `SentimentAnalyzer/config.json`.
 
 # How To Run the Customer Feedback Analyzer Web Application
