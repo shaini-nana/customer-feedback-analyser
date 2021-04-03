@@ -1,10 +1,16 @@
 import csv
 import nltk
+import os.path
+from pathlib import Path
+
 
 nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 
-reviewFile = open('DataScraper/reviews_01.csv')
+# add the reviews file name which you need to analyze reviews upon
+selectedReviewsFile = 'reviews_01'
+
+reviewFile = open('DataScraper/' + selectedReviewsFile + '.csv')
 reviewReader = csv.reader(reviewFile)
 
 # @todo improve the food items list to be in line with scraped reviews
@@ -40,9 +46,18 @@ for reviewCategories in reviews:
 
 
 if isCategorizedReviews:
-    print("Filtered food reviews found")
-    # create preprocessed reviews directory
-    # create individual files in the directory
-    # write data to each file
+    print("Filtered food reviews FOUND !!!")
+    # create a directory within the DataPreprocessor directory
+    # to store all the preprocessed each food item specific reviews
+    Path("DataPreprocessor/" + selectedReviewsFile).mkdir(parents=True, exist_ok=True)
+
+    # loop through each food item to create specific directories to get the reviews
+    for inx, foodItem in enumerate(foodItems):
+        # create/open csv files specific to each food item
+        with open("DataPreprocessor/" + selectedReviewsFile + "/" + foodItem + ".csv", 'w', newline='') as file:
+            writer = csv.writer(file)
+            # write each food item specific reviews to the respective food item csv file
+            for foodReview in reviews[inx]:
+                writer.writerow([foodReview])
 else:
-    print("Filtered food reviews not found")
+    print("Filtered food reviews NOT found !!!")
