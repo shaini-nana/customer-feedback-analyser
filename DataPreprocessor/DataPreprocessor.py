@@ -1,6 +1,5 @@
 import csv
 import nltk
-import os.path
 from pathlib import Path
 
 
