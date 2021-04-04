@@ -23,18 +23,9 @@ let overallNeutralScore = 0.00;
 let overallMixedReviewCount = 0;
 let overallMixedScore = 0.00;
 
-const readCSV = pathToFile => {
-  fs.createReadStream(pathToFile)
-    .pipe(parse({delimiter: ':'}))
-    .on('data', (row) => {
-      reviewsToBeAnalyzed.push(row[0])
-    })
-    .on('end', async () => {
-      console.log(`CSV file successfully processed. Number of reviews to be processed: ${reviewsToBeAnalyzed.length}`);
-      await Promise.all(analyzeSentiments(reviewsToBeAnalyzed));
-      printResults();
-    });
-};
+const basePath = "../DataScraper";
+const selectedReviewsFile = "reviews_01";
+const pathToOverallAnalytics = `${basePath}/${selectedReviewsFile}.csv`;
 
 const analyzeSentiments = reviews => {
 
@@ -75,4 +66,18 @@ const printResults = () => {
   console.log(`Overall Mixed Review Count: ${overallMixedReviewCount} || Overall Mixed Score: ${overallMixedScore}`);
 };
 
-readCSV("../DataScraper/reviews_01.csv");
+const getOverallReviewAnalytics = pathToFile => {
+  fs.createReadStream(pathToFile)
+    .pipe(parse({delimiter: ':'}))
+    .on('data', (row) => {
+      reviewsToBeAnalyzed.push(row[0])
+    })
+    .on('end', async () => {
+      console.log(`CSV file successfully processed. Number of reviews to be processed: ${reviewsToBeAnalyzed.length}`);
+      await Promise.all(analyzeSentiments(reviewsToBeAnalyzed));
+      printResults();
+    });
+};
+
+// getting the overall analytics on all available reviews
+getOverallReviewAnalytics(pathToOverallAnalytics);

@@ -22,7 +22,7 @@ Further in order to view the final analytical results run the `Customer Feedback
 - Step 1: Open terminal and make sure you are on the project root location.
 
 - Step 2: Add the correct reviews file name to the variable `selectedReviewsFile` in the 
-`DataPreprocessor/DataPreprocessor.py` file, because the preprocessor will be running against the specified file.
+`DataPreprocessor/DataPreprocessor.py` file and in the `SentimentAnalyzer/sentimentAnalyzer.js` file, because the preprocessor will be running against the specified file.
 
 - Step 3: Add the food items which you need to have the individual reviews drilled down to. 
 This needs to be entered as array items to the variable `foodItems` in the `DataPreprocessor/DataPreprocessor.py` file.
