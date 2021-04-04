@@ -1,7 +1,12 @@
 const fs = require('fs');
-var parse = require('csv-parse');
+const parse = require('csv-parse');
+const AWS = require("aws-sdk");
 
-const aws = require('./aws.js');
+AWS.config.loadFromPath('./config.json');
+
+const comprehend = new AWS.Comprehend({
+  apiVersion: '2017-11-27'
+});
 
 const params = {
   LanguageCode: 'en',
@@ -9,6 +14,14 @@ const params = {
 };
 
 const reviewsToBeAnalyzed = [];
+let overallPositiveReviewCount = 0;
+let overallPositiveScore = 0.00;
+let overallNegativeReviewCount = 0;
+let overallNegativeScore = 0.00;
+let overallNeutralReviewCount = 0;
+let overallNeutralScore = 0.00;
+let overallMixedReviewCount = 0;
+let overallMixedScore = 0.00;
 
 const readCSV = pathToFile => {
   fs.createReadStream(pathToFile)
@@ -18,8 +31,40 @@ const readCSV = pathToFile => {
     })
     .on('end', async () => {
       console.log(`CSV file successfully processed. Number of reviews to be processed: ${reviewsToBeAnalyzed.length}`);
+      await Promise.all(analyzeSentiments(reviewsToBeAnalyzed));
     });
 };
 
+const analyzeSentiments = reviews => {
+
+  const results = [];
+
+  for (let index = 0; index < reviews.length; index ++) {
+    params.Text = reviews[index];
+    results.push(
+      comprehend.detectSentiment(params).promise().then(async data => {
+        console.log(`Success Result.... : ${JSON.stringify(data)}`);
+
+        overallPositiveScore += data.SentimentScore.Positive;
+        overallNegativeScore += data.SentimentScore.Negative;
+        overallNeutralScore += data.SentimentScore.Neutral;
+        overallMixedScore += data.SentimentScore.Mixed;
+
+        if (data.Sentiment === 'POSITIVE') {
+          overallPositiveReviewCount ++;
+        } else if (data.Sentiment === 'NEGATIVE') {
+          overallNegativeReviewCount ++;
+        } else if (data.Sentiment === 'NEUTRAL') {
+          overallNeutralReviewCount ++;
+        } else {
+          overallMixedReviewCount ++;
+        }
+      }).catch(error => {
+        console.log(`Error occurred... ${error.stack}`)
+      })
+    );
+  }
+  return results;
+};
+
 readCSV("../DataScraper/reviews_01.csv");
-aws.analyzeSentiment(params);
