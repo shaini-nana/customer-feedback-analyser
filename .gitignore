@@ -4,3 +4,6 @@
 
 # Dependency directories
 SentimentAnalyzer/node_modules
+
+# AWS configs
+SentimentAnalyzer/config.json

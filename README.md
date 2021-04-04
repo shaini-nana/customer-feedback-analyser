@@ -43,6 +43,8 @@ This will be only created if the reviews were relating to any of the provided fo
 - Step 2: Install the required node modules to run the `SentimentAnalyzer` by running the below command.
 `yarn`
 
+- Step 3: Create `config.json` file within the `SentimentAnalyzer` directory.
+
 - Step 3: Create AWS account, login to it and obtain the AWS keys which needs to be added to the `SentimentAnalyzer/config.json`.
 
 # How To Run the Customer Feedback Analyzer Web Application
