@@ -32,6 +32,7 @@ const readCSV = pathToFile => {
     .on('end', async () => {
       console.log(`CSV file successfully processed. Number of reviews to be processed: ${reviewsToBeAnalyzed.length}`);
       await Promise.all(analyzeSentiments(reviewsToBeAnalyzed));
+      printResults();
     });
 };
 
@@ -43,8 +44,6 @@ const analyzeSentiments = reviews => {
     params.Text = reviews[index];
     results.push(
       comprehend.detectSentiment(params).promise().then(async data => {
-        console.log(`Success Result.... : ${JSON.stringify(data)}`);
-
         overallPositiveScore += data.SentimentScore.Positive;
         overallNegativeScore += data.SentimentScore.Negative;
         overallNeutralScore += data.SentimentScore.Neutral;
@@ -65,6 +64,15 @@ const analyzeSentiments = reviews => {
     );
   }
   return results;
+};
+
+const printResults = () => {
+  console.log("========= Results of the Sentiment Analysis ==========");
+
+  console.log(`Overall Positive Review Count: ${overallPositiveReviewCount} || Overall Positivity Score: ${overallPositiveScore}`);
+  console.log(`Overall Negative Review Count: ${overallNegativeReviewCount} || Overall Negative Score: ${overallNegativeScore}`);
+  console.log(`Overall Neutral Review Count: ${overallNeutralReviewCount} || Overall Neutral Score: ${overallNeutralScore}`);
+  console.log(`Overall Mixed Review Count: ${overallMixedReviewCount} || Overall Mixed Score: ${overallMixedScore}`);
 };
 
 readCSV("../DataScraper/reviews_01.csv");
