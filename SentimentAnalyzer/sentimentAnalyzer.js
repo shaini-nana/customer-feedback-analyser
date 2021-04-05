@@ -14,6 +14,7 @@ const params = {
 };
 
 const reviewsToBeAnalyzed = [];
+const foodItemWiseAnalytics = [];
 let overallPositiveReviewCount = 0;
 let overallPositiveScore = 0.00;
 let overallNegativeReviewCount = 0;
@@ -23,9 +24,13 @@ let overallNeutralScore = 0.00;
 let overallMixedReviewCount = 0;
 let overallMixedScore = 0.00;
 
-const basePath = "../DataScraper";
+const basePathForOverallReviews = "../DataScraper";
 const selectedReviewsFile = "reviews_01";
-const pathToOverallAnalytics = `${basePath}/${selectedReviewsFile}.csv`;
+const pathToOverallAnalytics = `${basePathForOverallReviews}/${selectedReviewsFile}.csv`;
+
+const basePathForFoodItemWiseReviews = "./reviews_01";
+// @todo improve the food items list to be in line with scraped reviews
+const foodItems = ["burger", "pizza"];
 
 const analyzeSentiments = reviews => {
 
@@ -49,6 +54,7 @@ const analyzeSentiments = reviews => {
         } else {
           overallMixedReviewCount ++;
         }
+        return data;
       }).catch(error => {
         console.log(`Error occurred... ${error.stack}`)
       })
@@ -79,5 +85,43 @@ const getOverallReviewAnalytics = pathToFile => {
     });
 };
 
+const getFoodItemsReviewAnalytics = () => {
+  // loop through each identified food item
+  for (let index = 0; index < foodItems.length; index++) {
+    let foodItemWiseReviews = [];
+    let foodItemWiseAnalyticalScore = {
+      fooItem: foodItems[index],
+      overallPositiveReviewCount: 0,
+      overallPositiveScore: 0.00,
+      overallNegativeReviewCount: 0,
+      overallNegativeScore: 0.00,
+      overallNeutralReviewCount: 0,
+      overallNeutralScore: 0.00,
+      overallMixedReviewCount: 0,
+
+      overallMixedScore: 0.00
+    };
+
+    // per each food item open up the respective reviews file and start reading it
+    fs.createReadStream(`../DataPreprocessor/${selectedReviewsFile}/${foodItems[index]}.csv`)
+      .pipe(parse({delimiter: ':'}))
+      .on('data', (row) => {
+        foodItemWiseReviews.push(row[0])
+      })
+      .on('end', async () => {
+        console.log(`CSV file successfully processed. Number of reviews to be processed: ${foodItemWiseReviews.length}`);
+        // upon completing reading the respective reviews file analyze the reviews using AWS comprehend
+        const results = await Promise.all(analyzeSentiments(foodItemWiseReviews));
+
+        console.log(`${foodItems[index]}: ${JSON.stringify(results)}`)
+      });
+
+    foodItemWiseAnalytics.push(foodItemWiseAnalyticalScore);
+  }
+};
+
 // getting the overall analytics on all available reviews
-getOverallReviewAnalytics(pathToOverallAnalytics);
+// getOverallReviewAnalytics(pathToOverallAnalytics);
+
+// getting the food item wise analytics on all available food item reviews
+getFoodItemsReviewAnalytics();

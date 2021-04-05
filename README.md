@@ -25,7 +25,7 @@ Further in order to view the final analytical results run the `Customer Feedback
 `DataPreprocessor/DataPreprocessor.py` file and in the `SentimentAnalyzer/sentimentAnalyzer.js` file, because the preprocessor will be running against the specified file.
 
 - Step 3: Add the food items which you need to have the individual reviews drilled down to. 
-This needs to be entered as array items to the variable `foodItems` in the `DataPreprocessor/DataPreprocessor.py` file.
+This needs to be entered as array items to the variable `foodItems` in the `DataPreprocessor/DataPreprocessor.py` file and in the `SentimentAnalyzer/sentimentAnalyzer.js` file.
 
 - Step 4: Being in project root location (`/customer-feedback-analyser`) execute the following command.
 ``
