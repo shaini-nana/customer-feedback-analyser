@@ -15,14 +15,17 @@ const params = {
 
 const reviewsToBeAnalyzed = [];
 const foodItemWiseAnalytics = [];
-let overallPositiveReviewCount = 0;
-let overallPositiveScore = 0.00;
-let overallNegativeReviewCount = 0;
-let overallNegativeScore = 0.00;
-let overallNeutralReviewCount = 0;
-let overallNeutralScore = 0.00;
-let overallMixedReviewCount = 0;
-let overallMixedScore = 0.00;
+let overallAnalyticalScores = {
+  fooItem: "Overall",
+  overallPositiveReviewCount: 0,
+  overallPositiveScore: 0.00,
+  overallNegativeReviewCount: 0,
+  overallNegativeScore: 0.00,
+  overallNeutralReviewCount: 0,
+  overallNeutralScore: 0.00,
+  overallMixedReviewCount: 0,
+  overallMixedScore: 0.00
+};
 
 const basePathForOverallReviews = "../DataScraper";
 const selectedReviewsFile = "reviews_01";
@@ -40,36 +43,44 @@ const analyzeSentiments = reviews => {
     params.Text = reviews[index];
     results.push(
       comprehend.detectSentiment(params).promise().then(async data => {
-        overallPositiveScore += data.SentimentScore.Positive;
-        overallNegativeScore += data.SentimentScore.Negative;
-        overallNeutralScore += data.SentimentScore.Neutral;
-        overallMixedScore += data.SentimentScore.Mixed;
-
-        if (data.Sentiment === 'POSITIVE') {
-          overallPositiveReviewCount ++;
-        } else if (data.Sentiment === 'NEGATIVE') {
-          overallNegativeReviewCount ++;
-        } else if (data.Sentiment === 'NEUTRAL') {
-          overallNeutralReviewCount ++;
-        } else {
-          overallMixedReviewCount ++;
-        }
         return data;
       }).catch(error => {
-        console.log(`Error occurred... ${error.stack}`)
+        console.log(`Error occurred... ${error.stack}`);
+        return error;
       })
     );
   }
   return results;
 };
 
-const printResults = () => {
-  console.log("========= Results of the Sentiment Analysis ==========");
+const printResults = score => {
+  console.log(`========= Results of the Sentiment Analysis for: ${score.fooItem} ==========`);
 
-  console.log(`Overall Positive Review Count: ${overallPositiveReviewCount} || Overall Positivity Score: ${overallPositiveScore}`);
-  console.log(`Overall Negative Review Count: ${overallNegativeReviewCount} || Overall Negative Score: ${overallNegativeScore}`);
-  console.log(`Overall Neutral Review Count: ${overallNeutralReviewCount} || Overall Neutral Score: ${overallNeutralScore}`);
-  console.log(`Overall Mixed Review Count: ${overallMixedReviewCount} || Overall Mixed Score: ${overallMixedScore}`);
+  console.log(`Overall Positive Review Count: ${score.overallPositiveReviewCount} || Overall Positivity Score: ${score.overallPositiveScore}`);
+  console.log(`Overall Negative Review Count: ${score.overallNegativeReviewCount} || Overall Negative Score: ${score.overallNegativeScore}`);
+  console.log(`Overall Neutral Review Count: ${score.overallNeutralReviewCount} || Overall Neutral Score: ${score.overallNeutralScore}`);
+  console.log(`Overall Mixed Review Count: ${score.overallMixedReviewCount} || Overall Mixed Score: ${score.overallMixedScore}`);
+};
+
+const getAnalyticalScores = (results, scoreRecorder) => {
+  let analyticalScore = scoreRecorder;
+  results.forEach(result => {
+    analyticalScore.overallPositiveScore += result.SentimentScore.Positive;
+    analyticalScore.overallNegativeScore += result.SentimentScore.Negative;
+    analyticalScore.overallNeutralScore += result.SentimentScore.Neutral;
+    analyticalScore.overallMixedScore += result.SentimentScore.Mixed;
+
+    if (result.Sentiment === 'POSITIVE') {
+      analyticalScore.overallPositiveReviewCount ++;
+    } else if (result.Sentiment === 'NEGATIVE') {
+      analyticalScore.overallNegativeReviewCount ++;
+    } else if (result.Sentiment === 'NEUTRAL') {
+      analyticalScore.overallNeutralReviewCount ++;
+    } else {
+      analyticalScore.overallMixedReviewCount ++;
+    }
+  });
+  return analyticalScore;
 };
 
 const getOverallReviewAnalytics = pathToFile => {
@@ -80,8 +91,9 @@ const getOverallReviewAnalytics = pathToFile => {
     })
     .on('end', async () => {
       console.log(`CSV file successfully processed. Number of reviews to be processed: ${reviewsToBeAnalyzed.length}`);
-      await Promise.all(analyzeSentiments(reviewsToBeAnalyzed));
-      printResults();
+      const results = await Promise.all(analyzeSentiments(reviewsToBeAnalyzed));
+      const analyticalScore = getAnalyticalScores(results, overallAnalyticalScores);
+      printResults(analyticalScore);
     });
 };
 
@@ -112,16 +124,15 @@ const getFoodItemsReviewAnalytics = () => {
         console.log(`CSV file successfully processed. Number of reviews to be processed: ${foodItemWiseReviews.length}`);
         // upon completing reading the respective reviews file analyze the reviews using AWS comprehend
         const results = await Promise.all(analyzeSentiments(foodItemWiseReviews));
-
-        console.log(`${foodItems[index]}: ${JSON.stringify(results)}`)
+        const score = getAnalyticalScores(results, foodItemWiseAnalyticalScore);
+        foodItemWiseAnalytics.push(score);
+        printResults(score);
       });
-
-    foodItemWiseAnalytics.push(foodItemWiseAnalyticalScore);
   }
 };
 
 // getting the overall analytics on all available reviews
-// getOverallReviewAnalytics(pathToOverallAnalytics);
+getOverallReviewAnalytics(pathToOverallAnalytics);
 
 // getting the food item wise analytics on all available food item reviews
 getFoodItemsReviewAnalytics();
