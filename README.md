@@ -47,6 +47,10 @@ This will be only created if the reviews were relating to any of the provided fo
 
 - Step 3: Create AWS account, login to it and obtain the AWS keys which needs to be added to the `SentimentAnalyzer/config.json`.
 
+- Step 4: Check whether there is a `foodItemReviews.csv` created with the respective focused directory in `reviews/AnalyzedReviewScores` directory.
+If so delete that `foodItemReviews.csv` before executing the `src/sentimentAnalyzer.js`.
+This needs to be done each time before executing `src/sentimentAnalyzer.js`.
+
 - Step 4: Execute the below command to run the `src/sentimentAnalyzer.js` script.
 `yarn start`
 

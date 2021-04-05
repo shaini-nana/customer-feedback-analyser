@@ -170,6 +170,43 @@ const getFoodItemsReviewAnalytics = () => {
         foodItemWiseAnalytics.push(score);
         // print results
         printResults(score);
+        // write results to file
+        if (!fs.existsSync(basePathToAnalyticalScores)){
+          fs.mkdirSync(basePathToAnalyticalScores);
+        }
+        const csvWriter = createCsvWriter({
+          path: `${basePathToAnalyticalScores}/foodItemReviews.csv`,
+          header: [
+            {id: 'foodItem', title: 'Food Item'},
+            {id: 'totalReviews', title: 'Total Number of Reviews'},
+            {id: 'positiveScore', title: 'Positive Score'},
+            {id: 'positiveReviewCount', title: 'Positive Review Count'},
+            {id: 'negativeScore', title: 'Negative Score'},
+            {id: 'negativeReviewCount', title: 'Negative Review Count'},
+            {id: 'neutralScore', title: 'Neutral Score'},
+            {id: 'neutralReviewCount', title: 'Neutral Review Count'},
+            {id: 'mixedScore', title: 'Mixed Score'},
+            {id: 'mixedReviewCount', title: 'Mixed Review Count'}
+          ],
+          append: true
+        });
+        const data = [
+          {
+            foodItem: foodItems[index],
+            totalReviews: foodItemWiseReviews.length,
+            positiveScore: score.overallPositiveScore,
+            positiveReviewCount: score.overallPositiveReviewCount,
+            negativeScore: score.overallNegativeScore,
+            negativeReviewCount: score.overallNegativeReviewCount,
+            neutralScore: score.overallNeutralScore,
+            neutralReviewCount: score.overallNeutralReviewCount,
+            mixedScore: score.overallMixedScore,
+            mixedReviewCount: score.overallMixedReviewCount
+          }
+        ];
+        csvWriter
+          .writeRecords(data)
+          .then(()=> console.log('The overall analytical scores written successfully'));
       });
   }
 };
@@ -178,4 +215,4 @@ const getFoodItemsReviewAnalytics = () => {
 getOverallReviewAnalytics(pathToOverallAnalytics);
 
 // getting the food item wise analytics on all available food item reviews
-// getFoodItemsReviewAnalytics();
+getFoodItemsReviewAnalytics();
