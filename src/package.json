@@ -13,6 +13,7 @@
     "aws-sdk": "^2.878.0",
     "csv-parse": "^4.15.3",
     "csv-parser": "^3.0.0",
+    "csv-writer": "^1.6.0",
     "fas": "^0.3.6"
   },
   "devDependencies": {}

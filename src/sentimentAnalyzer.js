@@ -1,6 +1,7 @@
 const fs = require('fs');
 const parse = require('csv-parse');
 const AWS = require("aws-sdk");
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 AWS.config.loadFromPath('./config.json');
 
@@ -31,6 +32,8 @@ const basePathForOverallReviews = "../reviews/scrapedReviews";
 const basePathForFoodItemWiseReviews = "../reviews/processedReviews";
 const selectedReviewsFile = "reviews_01";
 const pathToOverallAnalytics = `${basePathForOverallReviews}/${selectedReviewsFile}.csv`;
+
+const basePathToAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedReviewsFile}`;
 
 // @todo improve the food items list to be in line with scraped reviews
 const foodItems = ["burger", "pizza"];
@@ -97,6 +100,40 @@ const getOverallReviewAnalytics = pathToFile => {
       const analyticalScore = getAnalyticalScores(results, overallAnalyticalScores);
       // print results
       printResults(analyticalScore);
+      // write results to file
+      if (!fs.existsSync(basePathToAnalyticalScores)){
+        fs.mkdirSync(basePathToAnalyticalScores);
+      }
+      const csvWriter = createCsvWriter({
+        path: `${basePathToAnalyticalScores}/overall.csv`,
+        header: [
+          {id: 'totalReviews', title: 'Total Number of Reviews'},
+          {id: 'positiveScore', title: 'Positive Score'},
+          {id: 'positiveReviewCount', title: 'Positive Review Count'},
+          {id: 'negativeScore', title: 'Negative Score'},
+          {id: 'negativeReviewCount', title: 'Negative Review Count'},
+          {id: 'neutralScore', title: 'Neutral Score'},
+          {id: 'neutralReviewCount', title: 'Neutral Review Count'},
+          {id: 'mixedScore', title: 'Mixed Score'},
+          {id: 'mixedReviewCount', title: 'Mixed Review Count'}
+        ]
+      });
+      const data = [
+        {
+          totalReviews: reviewsToBeAnalyzed.length,
+          positiveScore: analyticalScore.overallPositiveScore,
+          positiveReviewCount: analyticalScore.overallPositiveReviewCount,
+          negativeScore: analyticalScore.overallNegativeScore,
+          negativeReviewCount: analyticalScore.overallNegativeReviewCount,
+          neutralScore: analyticalScore.overallNeutralScore,
+          neutralReviewCount: analyticalScore.overallNeutralReviewCount,
+          mixedScore: analyticalScore.overallMixedScore,
+          mixedReviewCount: analyticalScore.overallMixedReviewCount
+        }
+      ];
+      csvWriter
+        .writeRecords(data)
+        .then(()=> console.log('The overall analytical scores written successfully'));
     });
 };
 
@@ -141,4 +178,4 @@ const getFoodItemsReviewAnalytics = () => {
 getOverallReviewAnalytics(pathToOverallAnalytics);
 
 // getting the food item wise analytics on all available food item reviews
-getFoodItemsReviewAnalytics();
+// getFoodItemsReviewAnalytics();

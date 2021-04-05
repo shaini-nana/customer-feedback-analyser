@@ -19,32 +19,35 @@ Further in order to view the final analytical results run the `Customer Feedback
 # How To Execute Data Scraper
 
 # How To Execute Data Preprocessor
-- Step 1: Open terminal and make sure you are on the project root location.
+- Step 1: Open terminal and move to the `src` directory. 
+Make sure you are on the `customer-feedback-analyser/src` directory before executing the `DataPreprocessor.py` script.
 
 - Step 2: Add the correct reviews file name to the variable `selectedReviewsFile` in the 
-`DataPreprocessor/DataPreprocessor.py` file and in the `SentimentAnalyzer/sentimentAnalyzer.js` file, because the preprocessor will be running against the specified file.
+`src/DataPreprocessor.py` file and in the `src/sentimentAnalyzer.js` file.
 
 - Step 3: Add the food items which you need to have the individual reviews drilled down to. 
-This needs to be entered as array items to the variable `foodItems` in the `DataPreprocessor/DataPreprocessor.py` file and in the `SentimentAnalyzer/sentimentAnalyzer.js` file.
+This needs to be entered as array items to the variable `foodItems` in the `src/DataPreprocessor.py` file and in the `src/sentimentAnalyzer.js` file.
 
-- Step 4: Being in project root location (`/customer-feedback-analyser`) execute the following command.
+- Step 4: Being in the `src` directory (`customer-feedback-analyser/src`) execute the following command.
 ``
     python3 DataPreprocessor/DataPreprocessor.py
 ``
 
 - Step 5: Filtered reviews will be grouped based on the provided food items.
-Food item wise grouped reviews will be found in a directory created within the `DataPreprocessor` directory.
+Food item wise grouped reviews will be found in a directory created within the `reviews/processedReviews` directory.
 This will be only created if the reviews were relating to any of the provided food items.
 
 # How To Execute Sentiment Analyzer
-- Step 1: Be on the project root location (`/customer-feedback-analyser`) and execute the following command to move in to the `SentimentAnalyzer` directory.
-`cd SentimentAnalyzer/`
+- Step 1: Be in the `src` directory location (`customer-feedback-analyser/src`) before executing the `sentimentAnalyzer.js` script. 
 
-- Step 2: Install the required node modules to run the `SentimentAnalyzer` by running the below command.
+- Step 2: Install the required node modules to run the `SentimentAnalyzer.js` by running the below command.
 `yarn`
 
 - Step 3: Create `config.json` file within the `SentimentAnalyzer` directory.
 
 - Step 3: Create AWS account, login to it and obtain the AWS keys which needs to be added to the `SentimentAnalyzer/config.json`.
+
+- Step 4: Execute the below command to run the `src/sentimentAnalyzer.js` script.
+`yarn start`
 
 # How To Run the Customer Feedback Analyzer Web Application
