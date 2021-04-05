@@ -1,9 +1,21 @@
 # IDE
 .idea
 .DS_Store
+frontend/.DS_Store
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
 
 # Dependency directories
 src/node_modules
+frontend/node_modules
 
 # AWS configs
 src/config.json
+
+# testing
+frontend/coverage
+
+# production
+frontend/build
