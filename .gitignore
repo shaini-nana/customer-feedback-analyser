@@ -3,7 +3,7 @@
 .DS_Store
 
 # Dependency directories
-SentimentAnalyzer/node_modules
+src/node_modules
 
 # AWS configs
-SentimentAnalyzer/config.json
+src/config.json

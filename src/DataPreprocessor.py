@@ -9,7 +9,7 @@ tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 # add the reviews file name which you need to analyze reviews upon
 selectedReviewsFile = 'reviews_01'
 
-reviewFile = open('DataScraper/' + selectedReviewsFile + '.csv')
+reviewFile = open('../reviews/scrapedReviews/' + selectedReviewsFile + '.csv')
 reviewReader = csv.reader(reviewFile)
 
 # @todo improve the food items list to be in line with scraped reviews
@@ -48,12 +48,12 @@ if isCategorizedReviews:
     print("Filtered food reviews FOUND !!!")
     # create a directory within the DataPreprocessor directory
     # to store all the preprocessed each food item specific reviews
-    Path("DataPreprocessor/" + selectedReviewsFile).mkdir(parents=True, exist_ok=True)
+    Path("../reviews/processedReviews/" + selectedReviewsFile).mkdir(parents=True, exist_ok=True)
 
     # loop through each food item to create specific directories to get the reviews
     for inx, foodItem in enumerate(foodItems):
         # create/open csv files specific to each food item
-        with open("DataPreprocessor/" + selectedReviewsFile + "/" + foodItem + ".csv", 'w', newline='') as file:
+        with open("../reviews/processedReviews/" + selectedReviewsFile + "/" + foodItem + ".csv", 'w', newline='') as file:
             writer = csv.writer(file)
             # write each food item specific reviews to the respective food item csv file
             for foodReview in reviews[inx]:
