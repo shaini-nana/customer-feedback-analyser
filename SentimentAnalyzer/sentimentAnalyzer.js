@@ -31,7 +31,6 @@ const basePathForOverallReviews = "../DataScraper";
 const selectedReviewsFile = "reviews_01";
 const pathToOverallAnalytics = `${basePathForOverallReviews}/${selectedReviewsFile}.csv`;
 
-const basePathForFoodItemWiseReviews = "./reviews_01";
 // @todo improve the food items list to be in line with scraped reviews
 const foodItems = ["burger", "pizza"];
 
@@ -45,7 +44,7 @@ const analyzeSentiments = reviews => {
       comprehend.detectSentiment(params).promise().then(async data => {
         return data;
       }).catch(error => {
-        console.log(`Error occurred... ${error.stack}`);
+        console.log(`Error occurred... ${JSON.stringify(error.stack)}`);
         return error;
       })
     );
@@ -56,10 +55,10 @@ const analyzeSentiments = reviews => {
 const printResults = score => {
   console.log(`========= Results of the Sentiment Analysis for: ${score.fooItem} ==========`);
 
-  console.log(`Overall Positive Review Count: ${score.overallPositiveReviewCount} || Overall Positivity Score: ${score.overallPositiveScore}`);
-  console.log(`Overall Negative Review Count: ${score.overallNegativeReviewCount} || Overall Negative Score: ${score.overallNegativeScore}`);
-  console.log(`Overall Neutral Review Count: ${score.overallNeutralReviewCount} || Overall Neutral Score: ${score.overallNeutralScore}`);
-  console.log(`Overall Mixed Review Count: ${score.overallMixedReviewCount} || Overall Mixed Score: ${score.overallMixedScore}`);
+  console.log(`Positive Review Count: ${score.overallPositiveReviewCount} || Positivity Score: ${score.overallPositiveScore}`);
+  console.log(`Negative Review Count: ${score.overallNegativeReviewCount} || Negative Score: ${score.overallNegativeScore}`);
+  console.log(`Neutral Review Count: ${score.overallNeutralReviewCount} || Neutral Score: ${score.overallNeutralScore}`);
+  console.log(`Mixed Review Count: ${score.overallMixedReviewCount} || Mixed Score: ${score.overallMixedScore}`);
 };
 
 const getAnalyticalScores = (results, scoreRecorder) => {
@@ -91,8 +90,11 @@ const getOverallReviewAnalytics = pathToFile => {
     })
     .on('end', async () => {
       console.log(`CSV file successfully processed. Number of reviews to be processed: ${reviewsToBeAnalyzed.length}`);
+      // analyze all the reviews using AWS comprehend
       const results = await Promise.all(analyzeSentiments(reviewsToBeAnalyzed));
+      // calculate the analytical scores for all reviews
       const analyticalScore = getAnalyticalScores(results, overallAnalyticalScores);
+      // print results
       printResults(analyticalScore);
     });
 };
@@ -124,8 +126,11 @@ const getFoodItemsReviewAnalytics = () => {
         console.log(`CSV file successfully processed. Number of reviews to be processed: ${foodItemWiseReviews.length}`);
         // upon completing reading the respective reviews file analyze the reviews using AWS comprehend
         const results = await Promise.all(analyzeSentiments(foodItemWiseReviews));
+        // calculate the analytical scores for each food item
         const score = getAnalyticalScores(results, foodItemWiseAnalyticalScore);
+        // store the scores
         foodItemWiseAnalytics.push(score);
+        // print results
         printResults(score);
       });
   }
