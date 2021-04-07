@@ -1,16 +1,14 @@
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
-
-import './App.css';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import './App.less';
 import Dashboard from './components/Dashboard';
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
         <Switch>
           <Route path="/" component={Dashboard} />
         </Switch>
-      </BrowserRouter>
     </div>
   );
 }
