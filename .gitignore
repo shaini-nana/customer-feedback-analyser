@@ -10,6 +10,7 @@ frontend/.env.production.local
 # Dependency directories
 src/node_modules
 frontend/node_modules
+api/node_modules
 
 # AWS configs
 src/config.json
