@@ -15,18 +15,19 @@ const server = app.listen(port, () =>
 
 app.get('/overallAnalytics', (req, res) => {
 
-  logger.info(`Fetching overall analytics`);
+  const review = req.query.reviewName;
+  logger.info(`Fetching overall analytics for review: ${review}`);
 
   const overallReviewAnalytics = [];
 
   // @todo obtain name of the review as a query param
-  fs.createReadStream(`../reviews/AnalyzedReviewScores/reviews_01/overall.csv`)
+  fs.createReadStream(`../reviews/AnalyzedReviewScores/${review}/overall.csv`)
     .pipe(parse({delimiter: ':', from_line: 2}))
     .on('data', (row) => {
       overallReviewAnalytics.push(row[0]);
     })
     .on('end', async () => {
-      console.log(`CSV file successfully processed. Number of reviews to be processed: ${overallReviewAnalytics.length}`);
+      console.log(`Ovarall analytics for review: ${review} file successfully processed`);
       const analytics = overallReviewAnalytics[0].split(',');
       const overallAnalytics = {
         totalNumberOfReviews: Number(analytics[0]),
