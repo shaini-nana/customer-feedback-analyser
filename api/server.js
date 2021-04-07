@@ -20,7 +20,6 @@ app.get('/overallAnalytics', (req, res) => {
 
   const overallReviewAnalytics = [];
 
-  // @todo obtain name of the review as a query param
   fs.createReadStream(`../reviews/AnalyzedReviewScores/${review}/overall.csv`)
     .pipe(parse({delimiter: ':', from_line: 2}))
     .on('data', (row) => {
