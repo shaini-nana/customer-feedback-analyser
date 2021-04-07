@@ -14,8 +14,12 @@ const server = app.listen(port, () =>
 );
 
 app.get('/overallAnalytics', (req, res) => {
-  logger.info(`AAAAA Feedback Analyzer API is listening on por!`);
+
+  logger.info(`Fetching overall analytics`);
+
   const overallReviewAnalytics = [];
+
+  // @todo obtain name of the review as a query param
   fs.createReadStream(`../reviews/AnalyzedReviewScores/reviews_01/overall.csv`)
     .pipe(parse({delimiter: ':', from_line: 2}))
     .on('data', (row) => {
@@ -26,9 +30,16 @@ app.get('/overallAnalytics', (req, res) => {
       const analytics = overallReviewAnalytics[0].split(',');
       const overallAnalytics = {
         totalNumberOfReviews: Number(analytics[0]),
-        positiveScore: Number(analytics[1])
+        positiveScore: Number(analytics[1]),
+        positiveReviewCount: Number(analytics[2]),
+        negativeScore: Number(analytics[3]),
+        negativeReviewCount: Number(analytics[4]),
+        neutralScore: Number(analytics[5]),
+        neutralReviewCount: Number(analytics[6]),
+        mixedScore: Number(analytics[7]),
+        mixedReviewCount: Number(analytics[8]),
       };
-      res.json(overallAnalytics);
+      res.send(overallAnalytics);
     });
 });
 
