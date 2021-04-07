@@ -1,4 +1,5 @@
-import React from 'react';
+import React  from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Alert, Form, Input, Button } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
@@ -14,6 +15,10 @@ const Dashboard = () => {
 
   const onFinish = async (values) => {
     console.log(`on finish: ${JSON.stringify(values)}`);
+  };
+
+  const getOverallAnalytics = () => {
+    console.log(`Clicked getOverallAnalytics...`);
   };
 
   return (
@@ -71,6 +76,15 @@ const Dashboard = () => {
           </Link>
         </Form.Item>
       </Form>
+
+      <Button
+        onClick={getOverallAnalytics()}
+        block
+        style={{ marginBottom: 10 }}
+      >
+        TEST BUTTON
+      </Button>
+
     </PublicLayout>
   );
 };

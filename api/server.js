@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const parse = require('csv-parse');
+const cors = require('cors');
 
 let logger = require('./logger');
 
@@ -8,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(express.json());
+app.use(cors());
 
 const server = app.listen(port, () =>
   logger.info(`Customer Feedback Analyzer API is listening on port ${port}!`)
