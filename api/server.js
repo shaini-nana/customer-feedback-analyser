@@ -45,6 +45,42 @@ app.get('/overallAnalytics', (req, res) => {
     });
 });
 
+
+app.get('/foodAnalytics', (req, res) => {
+
+  const review = req.query.reviewName;
+  logger.info(`Fetching overall analytics for review: ${review}`);
+
+  const foodReviewAnalytics = [];
+  const results = [];
+
+  fs.createReadStream(`../reviews/AnalyzedReviewScores/${review}/foodItemReviews.csv`)
+    .pipe(parse({delimiter: ':'}))
+    .on('data', (row) => {
+      foodReviewAnalytics.push(row[0]);
+    })
+    .on('end', async () => {
+      console.log(`Ovarall analytics for review: ${review} file successfully processed`);
+      foodReviewAnalytics.forEach(foodReview => {
+        const analytics = foodReview.split(',');
+        const result = {
+          foodItem: analytics[0],
+          totalNumberOfReviews: Number(analytics[1]),
+          positiveScore: Number(analytics[2]),
+          positiveReviewCount: Number(analytics[3]),
+          negativeScore: Number(analytics[4]),
+          negativeReviewCount: Number(analytics[5]),
+          neutralScore: Number(analytics[6]),
+          neutralReviewCount: Number(analytics[7]),
+          mixedScore: Number(analytics[8]),
+          mixedReviewCount: Number(analytics[9]),
+        };
+        results.push(result);
+      });
+      res.send(results);
+    });
+});
+
 module.exports = {
   app,
   server
