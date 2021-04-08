@@ -1,20 +1,22 @@
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import './App.less';
-import Dashboard from './components/Dashboard';
-import OverallAnalytics from './components/OverallAnalytics';
-import FoodAnalytics from './components/FoodAnalytics';
+import { ThemeProvider } from '@material-ui/core';
+import GlobalStyles from 'src/components/GlobalStyles';
+import 'src/mixins/chartjs';
+import theme from 'src/theme';
+import Dashboard from './pages/Dashboard';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-        <Switch>
-          <Route path="/OverallAnalytics" component={OverallAnalytics} />
-          <Route path="/FoodAnalytics" component={FoodAnalytics} />
-          <Route path="/" component={Dashboard} />
-        </Switch>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <Switch>
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/" component={Dashboard} />
+      </Switch>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
