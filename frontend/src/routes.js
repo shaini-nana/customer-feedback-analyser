@@ -10,6 +10,7 @@ import ProductList from 'src/pages/ProductList';
 import Register from 'src/pages/Register';
 import Settings from 'src/pages/Settings';
 import Analytics from 'src/pages/Analytics';
+import FoodAnalytics from 'src/pages/FoodAnalytics';
 
 const routes = [
   {
@@ -17,6 +18,7 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: 'analytics', element: <Analytics /> },
+      { path: 'detailAnalytics', element: <FoodAnalytics /> },
       { path: 'account', element: <Account /> },
       { path: 'customers', element: <CustomerList /> },
       { path: 'dashboard', element: <Dashboard /> },

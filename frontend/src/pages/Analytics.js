@@ -35,7 +35,6 @@ class Analytics extends Component {
         this.setState(
           { apiResponse: JSON.parse(res) }
         );
-        console.log(`asas..a ${JSON.stringify(this.state.apiResponse)}`);
       })
       .catch((err) => console.log(`${err}`));
   }
@@ -44,7 +43,7 @@ class Analytics extends Component {
     return (
       <>
         <Helmet>
-          <title>Dashboard | Material Kit</title>
+          <title>Overall Analytics</title>
         </Helmet>
         <Box
           sx={{
