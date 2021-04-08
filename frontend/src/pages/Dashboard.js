@@ -5,7 +5,6 @@ import {
   Container,
   Grid
 } from '@material-ui/core';
-import Budget from 'src/components/dashboard//Budget';
 import LatestOrders from 'src/components/dashboard//LatestOrders';
 import LatestProducts from 'src/components/dashboard//LatestProducts';
 import Sales from 'src/components/dashboard//Sales';
@@ -57,17 +56,6 @@ class Dashboard extends Component {
               container
               spacing={3}
             >
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget totalCases={
-                  this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : null
-                } />
-              </Grid>
               <Grid
                 item
                 lg={3}
