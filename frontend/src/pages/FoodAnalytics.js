@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import {
-  Box,
+  Box, Card, CardHeader,
   Container,
   Grid
 } from '@material-ui/core';
@@ -14,6 +14,7 @@ import {
   purple,
   orange
 } from '@material-ui/core/colors';
+import { startCase, toLower } from 'lodash';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class FoodAnalytics extends Component {
@@ -45,10 +46,49 @@ class FoodAnalytics extends Component {
     this.state.apiResponse.forEach((foodItemAnalytics) => {
       displayedResult.push(
         <Container maxWidth={false} padd>
+          <Card>
+            <CardHeader
+              subheader={`${startCase(toLower(foodItemAnalytics.foodItem))} related text based customer reviews`}
+              title={startCase(toLower(foodItemAnalytics.foodItem))}
+            />
+          </Card>
           <Grid
             container
             spacing={3}
           >
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+
             <Grid
               item
               lg={3}

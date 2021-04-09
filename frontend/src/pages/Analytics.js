@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import {
   Box,
+  CardHeader,
   Container,
-  Grid
+  Grid,
+  Card
 } from '@material-ui/core';
 import Budget from 'src/components/dashboard//Budget';
 import TotalCustomers from 'src/components/dashboard//TotalCustomers';
@@ -53,6 +55,13 @@ class Analytics extends Component {
           }}
         >
           <Container maxWidth={false}>
+            <Card>
+              <CardHeader
+                subheader="On all text based customer reviews"
+                title="Overall Analytics"
+              />
+            </Card>
+
             <Grid
               container
               spacing={3}
@@ -64,9 +73,42 @@ class Analytics extends Component {
                 xl={3}
                 xs={12}
               >
+              </Grid>
+              <Grid
+                item
+                lg={3}
+                sm={6}
+                xl={3}
+                xs={12}
+              >
+              </Grid>
+              <Grid
+                item
+                lg={3}
+                sm={6}
+                xl={3}
+                xs={12}
+              >
+              </Grid>
+              <Grid
+                item
+                lg={3}
+                sm={6}
+                xl={3}
+                xs={12}
+              >
+              </Grid>
+
+              <Grid
+                item
+                lg={3}
+                sm={6}
+                xl={3}
+                xs={12}
+              >
                 <TotalCustomers
                   totalNumberOfReviews={
-                  this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
                   }
                   cardTitle="Number Of Customer Reviews"
                 />
@@ -105,7 +147,7 @@ class Analytics extends Component {
               >
                 <Budget
                   score={
-                  this.state.apiResponse ? this.state.apiResponse.positiveReviewCount : 0
+                    this.state.apiResponse ? this.state.apiResponse.positiveReviewCount : 0
                   }
                   cardTitle="Positive Review Count"
                   colour={green[600]}
