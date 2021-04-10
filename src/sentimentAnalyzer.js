@@ -14,7 +14,8 @@ const params = {
   Text: 'Food is really good and tasty'
 };
 
-const reviewsToBeAnalyzed = [];
+let reviewsToBeAnalyzed = [];
+let reviewsToBeAnalyzed_advance = [];
 const foodItemWiseAnalytics = [];
 let overallAnalyticalScores = {
   fooItem: "Overall",
@@ -30,8 +31,12 @@ let overallAnalyticalScores = {
 
 const basePathForProcessedReviews = "../reviews/processedReviews";
 const selectedReviewsFile = "reviews_01";
+
 const pathToOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/overall.csv`;
+const pathToAdvanceOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/advance/overall.csv`;
+
 const basePathToAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedReviewsFile}`;
+const basePathToAdvanceAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedReviewsFile}/advance`;
 
 // @todo improve the food items list to be in line with scraped reviews
 const foodItems = ["burger", "pizza"];
@@ -84,26 +89,27 @@ const getAnalyticalScores = (results, scoreRecorder) => {
   return analyticalScore;
 };
 
-const getOverallReviewAnalytics = pathToFile => {
+const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze) => {
+  reviewsToAnalyze = [];
   fs.createReadStream(pathToFile)
     .pipe(parse({delimiter: ':'}))
     .on('data', (row) => {
-      reviewsToBeAnalyzed.push(row[0])
+      reviewsToAnalyze.push(row[0])
     })
     .on('end', async () => {
-      console.log(`CSV file successfully processed. Number of reviews to be processed: ${reviewsToBeAnalyzed.length}`);
+      console.log(`CSV file successfully processed ${pathToFile}. Number of reviews to be processed: ${reviewsToAnalyze.length}`);
       // analyze all the reviews using AWS comprehend
-      const results = await Promise.all(analyzeSentiments(reviewsToBeAnalyzed));
+      const results = await Promise.all(analyzeSentiments(reviewsToAnalyze));
       // calculate the analytical scores for all reviews
       const analyticalScore = getAnalyticalScores(results, overallAnalyticalScores);
       // print results
       printResults(analyticalScore);
       // write results to file
-      if (!fs.existsSync(basePathToAnalyticalScores)){
-        fs.mkdirSync(basePathToAnalyticalScores);
+      if (!fs.existsSync(pathToStore)){
+        fs.mkdirSync(pathToStore);
       }
       const csvWriter = createCsvWriter({
-        path: `${basePathToAnalyticalScores}/overall.csv`,
+        path: `${pathToStore}/overall.csv`,
         header: [
           {id: 'totalReviews', title: 'Total Number of Reviews'},
           {id: 'positiveScore', title: 'Positive Score'},
@@ -118,7 +124,7 @@ const getOverallReviewAnalytics = pathToFile => {
       });
       const data = [
         {
-          totalReviews: reviewsToBeAnalyzed.length,
+          totalReviews: reviewsToAnalyze.length,
           positiveScore: analyticalScore.overallPositiveScore,
           positiveReviewCount: analyticalScore.overallPositiveReviewCount,
           negativeScore: analyticalScore.overallNegativeScore,
@@ -210,7 +216,9 @@ const getFoodItemsReviewAnalytics = () => {
 };
 
 // getting the overall analytics on all available reviews
-getOverallReviewAnalytics(pathToOverallAnalytics);
+getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed);
+// getting the overall analytics on all available reviews - with advance preprocessing
+getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance);
 
 // getting the food item wise analytics on all available food item reviews
 getFoodItemsReviewAnalytics();
