@@ -21,3 +21,6 @@ frontend/coverage
 
 # production
 frontend/build
+
+# Byte-compiled / optimized / DLL files
+src/__pycache__/

@@ -30,7 +30,7 @@ This needs to be entered as array items to the variable `foodItems` in the `src/
 
 - Step 4: Being in the `src` directory (`customer-feedback-analyser/src`) execute the following command.
 ``
-    python3 DataPreprocessor/DataPreprocessor.py
+    python3 DataPreprocessor.py
 ``
 
 - Step 5: Filtered reviews will be grouped based on the provided food items.

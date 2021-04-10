@@ -1,7 +1,7 @@
 import csv
 import nltk
 from pathlib import Path
-
+from Lemmatizer import lemmatize_sentence
 
 nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
@@ -15,7 +15,7 @@ reviewReader = csv.reader(reviewFile)
 # @todo improve the food items list to be in line with scraped reviews
 foodItems = ["burger", "pizza"]
 # @todo initializing food item related reviews array
-reviews = [[],[]]
+foodReviews = [[],[]]
 
 isCategorizedReviews = bool(0)
 
@@ -31,14 +31,16 @@ for row in reviewReader:
     # looping through each sentence of the focused review
     for reviewSentence in reviewSentences:
         processedSentence = reviewSentence.lower()
+        # lemmatize each review sentence
+        processedSentence = lemmatize_sentence(processedSentence)
 
         # looping each review sentence through each food item
         # to check if the review sentence is about any of the identified food items
         for inx, foodItem in enumerate(foodItems):
             if foodItem in  processedSentence:
-                reviews[inx].append(processedSentence)
+                foodReviews[inx].append(processedSentence)
 
-for reviewCategories in reviews:
+for reviewCategories in foodReviews:
     if len(reviewCategories) != 0:
         isCategorizedReviews = bool(10)
         break
@@ -56,7 +58,7 @@ if isCategorizedReviews:
         with open("../reviews/processedReviews/" + selectedReviewsFile + "/" + foodItem + ".csv", 'w', newline='') as file:
             writer = csv.writer(file)
             # write each food item specific reviews to the respective food item csv file
-            for foodReview in reviews[inx]:
+            for foodReview in foodReviews[inx]:
                 writer.writerow([foodReview])
 else:
     print("Filtered food reviews NOT found !!!")
