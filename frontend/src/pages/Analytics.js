@@ -5,7 +5,11 @@ import {
   CardHeader,
   Container,
   Grid,
-  Card
+  Card,
+  FormControlLabel,
+  Checkbox,
+  CardContent,
+  Divider
 } from '@material-ui/core';
 import Budget from 'src/components/dashboard//Budget';
 import TotalCustomers from 'src/components/dashboard//TotalCustomers';
@@ -29,6 +33,10 @@ class Analytics extends Component {
   componentDidMount() {
     this.callOverallAnalyticalResultsAPI();
   }
+
+  handleSubmit = (event) => {
+    console.log(`Checkbox status ${event.target.checked}`);
+  };
 
   callOverallAnalyticalResultsAPI() {
     fetch('http://localhost:4000/overallAnalytics?reviewName=reviews_01')
@@ -60,6 +68,36 @@ class Analytics extends Component {
                 subheader="On all text based customer reviews"
                 title="Overall Analytics"
               />
+              <Divider />
+              <CardContent>
+                <Grid
+                  container
+                  spacing={6}
+                  wrap="wrap"
+                >
+                  <Grid
+                    item
+                    md={4}
+                    sm={6}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                    xs={12}
+                  >
+                    <FormControlLabel
+                      control={(
+                        <Checkbox
+                          color="primary"
+                          id="bb"
+                          onChange={(event) => this.handleSubmit(event)}
+                        />
+                      )}
+                      label="Apply Advanced Data Preprocessing"
+                    />
+                  </Grid>
+                </Grid>
+              </CardContent>
             </Card>
 
             <Grid
