@@ -26,20 +26,21 @@ class Analytics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiResponse: null
+      apiResponse: null,
+
     };
   }
 
   componentDidMount() {
-    this.callOverallAnalyticalResultsAPI();
+    this.callOverallAnalyticalResultsAPI('http://localhost:4000/overallAnalytics?reviewName=reviews_01&isAdvance=false');
   }
 
   handleSubmit = (event) => {
-    console.log(`Checkbox status ${event.target.checked}`);
+    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/overallAnalytics?reviewName=reviews_01&isAdvance=${event.target.checked}`);
   };
 
-  callOverallAnalyticalResultsAPI() {
-    fetch('http://localhost:4000/overallAnalytics?reviewName=reviews_01')
+  callOverallAnalyticalResultsAPI(url) {
+    fetch(url)
       .then((res) => res.text())
       .then((res) => {
         this.setState(

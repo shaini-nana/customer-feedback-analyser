@@ -18,11 +18,12 @@ const server = app.listen(port, () =>
 app.get('/overallAnalytics', (req, res) => {
 
   const review = req.query.reviewName;
-  logger.info(`Fetching overall analytics for review: ${review}`);
+  const readStream = req.query.isAdvance === 'true' ? `../reviews/AnalyzedReviewScores/${review}/advance/overall.csv` : `../reviews/AnalyzedReviewScores/${review}/overall.csv`;
+  logger.info(`Fetching overall analytics for review from: ${readStream}`);
 
   const overallReviewAnalytics = [];
 
-  fs.createReadStream(`../reviews/AnalyzedReviewScores/${review}/overall.csv`)
+  fs.createReadStream(readStream)
     .pipe(parse({delimiter: ':', from_line: 2}))
     .on('data', (row) => {
       overallReviewAnalytics.push(row[0]);
