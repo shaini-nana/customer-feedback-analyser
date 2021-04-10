@@ -28,10 +28,9 @@ let overallAnalyticalScores = {
   overallMixedScore: 0.00
 };
 
-const basePathForOverallReviews = "../reviews/scrapedReviews";
-const basePathForFoodItemWiseReviews = "../reviews/processedReviews";
+const basePathForProcessedReviews = "../reviews/processedReviews";
 const selectedReviewsFile = "reviews_01";
-const pathToOverallAnalytics = `${basePathForOverallReviews}/${selectedReviewsFile}.csv`;
+const pathToOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/overall.csv`;
 
 const basePathToAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedReviewsFile}`;
 
@@ -155,7 +154,7 @@ const getFoodItemsReviewAnalytics = () => {
     };
 
     // per each food item open up the respective reviews file and start reading it
-    fs.createReadStream(`${basePathForFoodItemWiseReviews}/${selectedReviewsFile}/${foodItems[index]}.csv`)
+    fs.createReadStream(`${basePathForProcessedReviews}/${selectedReviewsFile}/${foodItems[index]}.csv`)
       .pipe(parse({delimiter: ':'}))
       .on('data', (row) => {
         foodItemWiseReviews.push(row[0])
