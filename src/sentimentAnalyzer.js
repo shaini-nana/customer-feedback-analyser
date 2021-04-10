@@ -28,6 +28,17 @@ let overallAnalyticalScores = {
   overallMixedReviewCount: 0,
   overallMixedScore: 0.00
 };
+let overallAdvanceAnalyticalScores = {
+  fooItem: "Overall Advance",
+  overallPositiveReviewCount: 0,
+  overallPositiveScore: 0.00,
+  overallNegativeReviewCount: 0,
+  overallNegativeScore: 0.00,
+  overallNeutralReviewCount: 0,
+  overallNeutralScore: 0.00,
+  overallMixedReviewCount: 0,
+  overallMixedScore: 0.00
+};
 
 const basePathForProcessedReviews = "../reviews/processedReviews";
 const selectedReviewsFile = "reviews_01";
@@ -89,7 +100,7 @@ const getAnalyticalScores = (results, scoreRecorder) => {
   return analyticalScore;
 };
 
-const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze) => {
+const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, scoreResults) => {
   reviewsToAnalyze = [];
   fs.createReadStream(pathToFile)
     .pipe(parse({delimiter: ':'}))
@@ -101,7 +112,7 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze) =>
       // analyze all the reviews using AWS comprehend
       const results = await Promise.all(analyzeSentiments(reviewsToAnalyze));
       // calculate the analytical scores for all reviews
-      const analyticalScore = getAnalyticalScores(results, overallAnalyticalScores);
+      const analyticalScore = getAnalyticalScores(results, scoreResults);
       // print results
       printResults(analyticalScore);
       // write results to file
@@ -216,9 +227,9 @@ const getFoodItemsReviewAnalytics = () => {
 };
 
 // getting the overall analytics on all available reviews
-getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed);
+getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed, overallAnalyticalScores);
 // getting the overall analytics on all available reviews - with advance preprocessing
-getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance);
+getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, overallAdvanceAnalyticalScores);
 
 // getting the food item wise analytics on all available food item reviews
 getFoodItemsReviewAnalytics();
