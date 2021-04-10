@@ -16,7 +16,9 @@ reviewReader = csv.reader(reviewFile)
 foodItems = ["burger", "pizza"]
 # @todo initializing food item related reviews array
 foodReviews = [[],[]]
+
 overallReviews = []
+overallReviewsAdvanced = []
 
 isCategorizedReviews = bool(0)
 
@@ -26,10 +28,11 @@ for row in reviewReader:
 
     # obtaining each review
     review = (row[0].strip().split('\t'))[0]
+    overallReviews.append(review)
 
     # lemmatize each review
     processedReview = lemmatize_sentence(review)
-    overallReviews.append(processedReview)
+    overallReviewsAdvanced.append(processedReview)
 
     # splitting the sentences of each review
     reviewSentences = tokenizer.tokenize(review)
@@ -55,6 +58,15 @@ for reviewCategories in foodReviews:
 # create a directory within the DataPreprocessor directory
 # to store all the preprocessed reviews
 Path("../reviews/processedReviews/" + selectedReviewsFile).mkdir(parents=True, exist_ok=True)
+Path("../reviews/processedReviews/" + selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
+
+# create/open csv files specific to each food item
+with open("../reviews/processedReviews/" + selectedReviewsFile + "/advance/overall.csv", 'w', newline='') as file:
+    writer = csv.writer(file)
+    # loop through each food item to create specific directories to get the reviews
+    for overallReview in overallReviewsAdvanced:
+        # write each food item specific reviews to the respective food item csv file
+        writer.writerow([overallReview])
 
 
 # create/open csv files specific to each food item

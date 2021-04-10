@@ -31,7 +31,6 @@ let overallAnalyticalScores = {
 const basePathForProcessedReviews = "../reviews/processedReviews";
 const selectedReviewsFile = "reviews_01";
 const pathToOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/overall.csv`;
-
 const basePathToAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedReviewsFile}`;
 
 // @todo improve the food items list to be in line with scraped reviews
