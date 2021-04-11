@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import {
-  Box, Card, CardHeader,
-  Container,
+  Box, Card, CardContent, CardHeader, Checkbox,
+  Container, Divider, FormControlLabel,
   Grid
 } from '@material-ui/core';
 import Budget from 'src/components/dashboard//Budget';
@@ -26,17 +26,20 @@ class FoodAnalytics extends Component {
   }
 
   componentDidMount() {
-    this.callOverallAnalyticalResultsAPI();
+    this.callOverallAnalyticalResultsAPI('http://localhost:4000/foodAnalytics?reviewName=reviews_01&isAdvance=false');
   }
 
-  callOverallAnalyticalResultsAPI() {
-    fetch('http://localhost:4000/foodAnalytics?reviewName=reviews_01')
+  handleSubmit = (event) => {
+    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/foodAnalytics?reviewName=reviews_01&isAdvance=${event.target.checked}`);
+  };
+
+  callOverallAnalyticalResultsAPI(url) {
+    fetch(url)
       .then((res) => res.text())
       .then((res) => {
         this.setState(
           { apiResponse: JSON.parse(res) }
         );
-        console.log(`${JSON.stringify(this.state.apiResponse)}`);
       })
       .catch((err) => console.log(`${err}`));
   }
@@ -45,7 +48,8 @@ class FoodAnalytics extends Component {
     const displayedResult = [];
     this.state.apiResponse.forEach((foodItemAnalytics) => {
       displayedResult.push(
-        <Container maxWidth={false} padd>
+        <Container maxWidth={false}>
+
           <Card>
             <CardHeader
               subheader={`${startCase(toLower(foodItemAnalytics.foodItem))} related text based customer reviews`}
@@ -281,10 +285,89 @@ class FoodAnalytics extends Component {
         <Box
           sx={{
             backgroundColor: 'background.default',
+            py: 3
+          }}
+        >
+          <Container maxWidth={false}>
+            <Card>
+              <CardHeader
+                subheader="On all text based customer reviews"
+                title="Detail Food Item Analytics"
+              />
+              <Divider />
+              <CardContent>
+                <Grid
+                  container
+                  spacing={6}
+                  wrap="wrap"
+                >
+                  <Grid
+                    item
+                    md={4}
+                    sm={6}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                    xs={12}
+                  >
+                    <FormControlLabel
+                      control={(
+                        <Checkbox
+                          color="primary"
+                          id="bb"
+                          onChange={(event) => this.handleSubmit(event)}
+                        />
+                      )}
+                      label="Apply Advanced Data Preprocessing"
+                    />
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Container>
+
+        </Box>
+        <Box
+          sx={{
+            backgroundColor: 'background.default',
             minHeight: '100%',
             py: 3
           }}
         >
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+
           { this.state.apiResponse ? this.displayFoodAnalytics() : null }
         </Box>
       </>
