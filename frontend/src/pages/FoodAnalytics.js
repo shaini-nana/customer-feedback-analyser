@@ -208,6 +208,9 @@ class FoodAnalytics extends Component {
                 score={
                   foodItemAnalytics.positiveScore || 0
                 }
+                totalScore={
+                  foodItemAnalytics.totalNumberOfReviews || 0
+                }
                 cardTitle="Positive Review Score"
                 colour={green[600]}
                 isScore={true}
@@ -223,6 +226,9 @@ class FoodAnalytics extends Component {
               <Budget
                 score={
                   foodItemAnalytics.negativeScore || 0
+                }
+                totalScore={
+                  foodItemAnalytics.totalNumberOfReviews || 0
                 }
                 cardTitle="Negative Review Score"
                 colour={red[600]}
@@ -240,6 +246,9 @@ class FoodAnalytics extends Component {
                 score={
                   foodItemAnalytics.neutralScore || 0
                 }
+                totalScore={
+                  foodItemAnalytics.totalNumberOfReviews || 0
+                }
                 cardTitle="Neutral Review Score"
                 colour={orange[600]}
                 isScore={true}
@@ -255,6 +264,9 @@ class FoodAnalytics extends Component {
               <Budget
                 score={
                   foodItemAnalytics.mixedScore || 0
+                }
+                totalScore={
+                  foodItemAnalytics.totalNumberOfReviews || 0
                 }
                 cardTitle="Mixed Review Score"
                 colour={purple[600]}

@@ -16,9 +16,10 @@ const populateIcon = (isScore) => {
   return <AssessmentIcon />;
 };
 
-const roundOffValueIfScore = (isScore, value) => {
+const roundOffValueIfScore = (isScore, value, total) => {
   if (isScore) {
-    return Math.round(value * 100) / 100;
+    const score = Math.round(value * 100) / 100;
+    return `${score}/${total}`;
   }
   return value;
 };
@@ -45,7 +46,7 @@ const Budget = (props) => (
             color="textPrimary"
             variant="h1"
           >
-            {roundOffValueIfScore(props.isScore, props.score)}
+            {roundOffValueIfScore(props.isScore, props.score, props.totalScore)}
           </Typography>
         </Grid>
         <Grid item>
@@ -66,6 +67,7 @@ const Budget = (props) => (
 
 Budget.propTypes = {
   score: PropTypes.number,
+  totalScore: PropTypes.number,
   cardTitle: PropTypes.string,
   colour: PropTypes.string,
   isScore: PropTypes.bool

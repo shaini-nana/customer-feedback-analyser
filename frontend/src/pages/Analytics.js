@@ -253,6 +253,9 @@ class Analytics extends Component {
                   score={
                     this.state.apiResponse ? this.state.apiResponse.positiveScore : 0
                   }
+                  totalScore={
+                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+                  }
                   cardTitle="Positive Review Score"
                   colour={green[600]}
                   isScore={true}
@@ -268,6 +271,9 @@ class Analytics extends Component {
                 <Budget
                   score={
                     this.state.apiResponse ? this.state.apiResponse.negativeScore : 0
+                  }
+                  totalScore={
+                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
                   }
                   cardTitle="Negative Review Score"
                   colour={red[600]}
@@ -285,6 +291,9 @@ class Analytics extends Component {
                   score={
                     this.state.apiResponse ? this.state.apiResponse.neutralScore : 0
                   }
+                  totalScore={
+                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+                  }
                   cardTitle="Neutral Review Score"
                   colour={orange[600]}
                   isScore={true}
@@ -300,6 +309,9 @@ class Analytics extends Component {
                 <Budget
                   score={
                     this.state.apiResponse ? this.state.apiResponse.mixedScore : 0
+                  }
+                  totalScore={
+                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
                   }
                   cardTitle="Mixed Review Score"
                   colour={purple[600]}
