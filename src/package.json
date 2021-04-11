@@ -2,9 +2,9 @@
   "name": "sentiment-analyzer",
   "version": "1.0.0",
   "description": "Sentiment Analyzer",
-  "main": "./sentimentAnalyzer.js",
+  "main": "SentimentAnalyzer.js",
   "scripts": {
-    "start": "node ./sentimentAnalyzer.js"
+    "start": "node SentimentAnalyzer.js"
   },
   "engines": {
     "node": ">=12.10.0"

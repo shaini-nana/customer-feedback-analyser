@@ -23,10 +23,10 @@ Further in order to view the final analytical results run the `Customer Feedback
 Make sure you are on the `customer-feedback-analyser/src` directory before executing the `DataPreprocessor.py` script.
 
 - Step 2: Add the correct reviews file name to the variable `selectedReviewsFile` in the 
-`src/DataPreprocessor.py` file and in the `src/sentimentAnalyzer.js` file.
+`src/DataPreprocessor.py` file and in the `src/SentimentAnalyzer.js` file.
 
 - Step 3: Add the food items which you need to have the individual reviews drilled down to. 
-This needs to be entered as array items to the variable `foodItems` in the `src/DataPreprocessor.py` file and in the `src/sentimentAnalyzer.js` file.
+This needs to be entered as array items to the variable `foodItems` in the `src/DataPreprocessor.py` file and in the `src/SentimentAnalyzer.js` file.
 
 - Step 4: Being in the `src` directory (`customer-feedback-analyser/src`) execute the following command.
 ``
@@ -38,7 +38,7 @@ Food item wise grouped reviews will be found in a directory created within the `
 This will be only created if the reviews were relating to any of the provided food items.
 
 # How To Execute Sentiment Analyzer
-- Step 1: Be in the `src` directory location (`customer-feedback-analyser/src`) before executing the `sentimentAnalyzer.js` script. 
+- Step 1: Be in the `src` directory location (`customer-feedback-analyser/src`) before executing the `SentimentAnalyzer.js` script. 
 
 - Step 2: Install the required node modules to run the `SentimentAnalyzer.js` by running the below command.
 `yarn`
@@ -48,10 +48,10 @@ This will be only created if the reviews were relating to any of the provided fo
 - Step 3: Create AWS account, login to it and obtain the AWS keys which needs to be added to the `SentimentAnalyzer/config.json`.
 
 - Step 4: Check whether there is a `foodItemReviews.csv` created with the respective focused directory in `reviews/AnalyzedReviewScores` directory.
-If so delete that `foodItemReviews.csv` before executing the `src/sentimentAnalyzer.js`.
-This needs to be done each time before executing `src/sentimentAnalyzer.js`.
+If so delete that `foodItemReviews.csv` before executing the `src/SentimentAnalyzer.js`.
+This needs to be done each time before executing `src/SentimentAnalyzer.js`.
 
-- Step 4: Execute the below command to run the `src/sentimentAnalyzer.js` script.
+- Step 4: Execute the below command to run the `src/SentimentAnalyzer.js` script.
 `yarn start`
 
 # How To Run the Customer Feedback Analyzer Web Application
