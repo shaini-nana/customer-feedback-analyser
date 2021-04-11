@@ -15,12 +15,17 @@ reviewReader = csv.reader(reviewFile)
 # @todo improve the food items list to be in line with scraped reviews
 foodItems = ["burger", "pizza"]
 # @todo initializing food item related reviews array
-foodReviews = [[],[]]
+foodReviews = []
+foodReviewsAdvance = []
 
 overallReviews = []
 overallReviewsAdvanced = []
 
 isCategorizedReviews = bool(0)
+
+for foodRevCategory in foodItems:
+    foodReviews.append([])
+    foodReviewsAdvance.append([])
 
 print("======= Start reading through the reviews =======")
 # looping through the reviews csv
