@@ -2,6 +2,7 @@ import csv
 import nltk
 from pathlib import Path
 from Lemmatizer import lemmatize_sentence
+from StopWordRemoval import remove_stop_words
 
 nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
@@ -37,6 +38,8 @@ for row in reviewReader:
 
     # lemmatize each review
     processedReview = lemmatize_sentence(review)
+    # remove stop words in each review
+    processedReview = remove_stop_words(processedReview)
     overallReviewsAdvanced.append(processedReview)
 
     # splitting the sentences of each review
@@ -47,6 +50,8 @@ for row in reviewReader:
         processedSentence = reviewSentence.lower()
         # lemmatize each review sentence
         processedSentenceWithAdvancePreprocessing = lemmatize_sentence(processedSentence)
+        # remove stop words in each sentence
+        processedSentenceWithAdvancePreprocessing = remove_stop_words(processedSentenceWithAdvancePreprocessing)
 
         # looping each review sentence through each food item
         # to check if the review sentence is about any of the identified food items
