@@ -152,7 +152,12 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, sc
     });
 };
 
-const getFoodItemsReviewAnalytics = () => {
+const getFoodItemsReviewAnalytics = (readStream, writeStream) => {
+  const filePath = `${writeStream}/foodItemReviews.csv`;
+  if (fs.existsSync(filePath)){
+    fs.unlinkSync(filePath);
+  }
+
   // loop through each identified food item
   for (let index = 0; index < foodItems.length; index++) {
     let foodItemWiseReviews = [];
@@ -170,7 +175,7 @@ const getFoodItemsReviewAnalytics = () => {
     };
 
     // per each food item open up the respective reviews file and start reading it
-    fs.createReadStream(`${basePathForProcessedReviews}/${selectedReviewsFile}/${foodItems[index]}.csv`)
+    fs.createReadStream(`${readStream}/${foodItems[index]}.csv`)
       .pipe(parse({delimiter: ':'}))
       .on('data', (row) => {
         foodItemWiseReviews.push(row[0])
@@ -186,11 +191,11 @@ const getFoodItemsReviewAnalytics = () => {
         // print results
         printResults(score);
         // write results to file
-        if (!fs.existsSync(basePathToAnalyticalScores)){
-          fs.mkdirSync(basePathToAnalyticalScores);
+        if (!fs.existsSync(writeStream)){
+          fs.mkdirSync(writeStream);
         }
         const csvWriter = createCsvWriter({
-          path: `${basePathToAnalyticalScores}/foodItemReviews.csv`,
+          path: filePath,
           header: [
             {id: 'foodItem', title: 'Food Item'},
             {id: 'totalReviews', title: 'Total Number of Reviews'},
@@ -232,4 +237,6 @@ getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, re
 getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, overallAdvanceAnalyticalScores);
 
 // getting the food item wise analytics on all available food item reviews
-getFoodItemsReviewAnalytics();
+getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}`, basePathToAnalyticalScores);
+// getting the food item wise analytics on all available food item reviews - with advance preprocessing
+getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}/advance`, basePathToAdvanceAnalyticalScores);
