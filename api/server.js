@@ -50,12 +50,13 @@ app.get('/overallAnalytics', (req, res) => {
 app.get('/foodAnalytics', (req, res) => {
 
   const review = req.query.reviewName;
-  logger.info(`Fetching overall analytics for review: ${review}`);
+  const readStream = req.query.isAdvance === 'true' ? `../reviews/AnalyzedReviewScores/${review}/advance/foodItemReviews.csv` : `../reviews/AnalyzedReviewScores/${review}/foodItemReviews.csv`;
+  logger.info(`Fetching food analytics for review from: ${readStream}`);
 
   const foodReviewAnalytics = [];
   const results = [];
 
-  fs.createReadStream(`../reviews/AnalyzedReviewScores/${review}/foodItemReviews.csv`)
+  fs.createReadStream(readStream)
     .pipe(parse({delimiter: ':'}))
     .on('data', (row) => {
       foodReviewAnalytics.push(row[0]);
