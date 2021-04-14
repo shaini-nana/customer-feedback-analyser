@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import {
-  Box,
-  CardHeader,
-  Container,
-  Grid,
-  Card,
-  FormControlLabel,
-  Checkbox,
-  CardContent,
-  Divider
+  Box, Card, CardContent, CardHeader, Checkbox,
+  Container, Divider, FormControlLabel,
+  Grid
 } from '@material-ui/core';
 import Budget from 'src/components/dashboard//Budget';
 
 import {
   green,
-  red,
   purple,
   orange
 } from '@material-ui/core/colors';
@@ -25,17 +18,16 @@ class Accuracy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiResponse: null,
-
+      apiResponse: null
     };
   }
 
   componentDidMount() {
-    this.callOverallAnalyticalResultsAPI('http://localhost:4000/overallAnalytics?reviewName=reviews_01&isAdvance=false');
+    this.callOverallAnalyticalResultsAPI('http://localhost:4000/accuracy?reviewName=reviews_01&isAdvance=false');
   }
 
   handleSubmit = (event) => {
-    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/overallAnalytics?reviewName=reviews_01&isAdvance=${event.target.checked}`);
+    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/accuracy?reviewName=reviews_01&isAdvance=${event.target.checked}`);
   };
 
   callOverallAnalyticalResultsAPI(url) {
@@ -49,16 +41,138 @@ class Accuracy extends Component {
       .catch((err) => console.log(`${err}`));
   }
 
+  displayFoodAnalytics() {
+    const displayedResult = [];
+    this.state.apiResponse.forEach((accuracyValues) => {
+      displayedResult.push(
+        <Container maxWidth={false}>
+
+          <Card>
+            <CardHeader
+              subheader={accuracyValues.type}
+              title="F1 Score Calculation Mode:"
+            />
+          </Card>
+          <Grid
+            container
+            spacing={3}
+          >
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <Budget
+                score={
+                  accuracyValues.f1 || 0
+                }
+                cardTitle="F1 Score"
+                colour={green[600]}
+                isScore={false}
+                isAnalytics={true}
+              />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <Budget
+                score={
+                  accuracyValues.precision || 0
+                }
+                cardTitle="Precision"
+                colour={purple[600]}
+                isScore={false}
+                isAnalytics={true}
+              />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <Budget
+                score={
+                  accuracyValues.recall || 0
+                }
+                cardTitle="Recall"
+                colour={orange[600]}
+                isScore={false}
+                isAnalytics={true}
+              />
+            </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            />
+
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+            </Grid>
+          </Grid>
+        </Container>
+      );
+    });
+    return displayedResult;
+  }
+
   render() {
     return (
       <>
         <Helmet>
-          <title>Overall Accuracy Values</title>
+          <title>Food Analytics</title>
         </Helmet>
         <Box
           sx={{
             backgroundColor: 'background.default',
-            minHeight: '100%',
             py: 3
           }}
         >
@@ -66,7 +180,7 @@ class Accuracy extends Component {
             <Card>
               <CardHeader
                 subheader="On all text based customer reviews"
-                title="Overall Accuracy Values"
+                title="Overall Accuracies"
               />
               <Divider />
               <CardContent>
@@ -99,110 +213,50 @@ class Accuracy extends Component {
                 </Grid>
               </CardContent>
             </Card>
-
-            <Grid
-              container
-              spacing={3}
-            >
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-              </Grid>
-
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.positiveReviewCount : 0
-                  }
-                  cardTitle="Positive Review Count"
-                  colour={green[600]}
-                  isScore={false}
-                />
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.negativeReviewCount : 0
-                  }
-                  cardTitle="Negative Review Count"
-                  colour={red[600]}
-                  isScore={false}
-                />
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.neutralReviewCount : 0
-                  }
-                  cardTitle="Neutral Review Count"
-                  colour={orange[600]}
-                  isScore={false}
-                />
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
-                  }
-                  cardTitle="Mixed Review Count"
-                  colour={purple[600]}
-                  isScore={false}
-                />
-              </Grid>
-            </Grid>
           </Container>
+
+        </Box>
+        <Box
+          sx={{
+            backgroundColor: 'background.default',
+            minHeight: '100%',
+            py: 3
+          }}
+        >
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+
+          { this.state.apiResponse ? this.displayFoodAnalytics() : null }
         </Box>
       </>
     );
