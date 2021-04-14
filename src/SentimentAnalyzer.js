@@ -49,6 +49,9 @@ const pathToAdvanceOverallAnalytics = `${basePathForProcessedReviews}/${selected
 const basePathToAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedReviewsFile}`;
 const basePathToAdvanceAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedReviewsFile}/advance`;
 
+const basePathForAccuracyOfReviews = `../accuracy/${selectedReviewsFile}/overall.csv`;
+const basePathForAccuracyOfReviews_final = `../accuracy/${selectedReviewsFile}/overall_final.csv`;
+
 // @todo improve the food items list to be in line with scraped reviews
 const foodItems = ["burger", "pizza"];
 
@@ -100,8 +103,23 @@ const getAnalyticalScores = (results, scoreRecorder) => {
   return analyticalScore;
 };
 
-const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, scoreResults) => {
+const convertSentimentToValue = (sentiment) => {
+  let result;
+  if (sentiment === 'POSITIVE') {
+    result = 1;
+  } else if (sentiment === 'NEGATIVE') {
+    result = 2;
+  } else if (sentiment === 'NEUTRAL') {
+    result = 3;
+  } else {
+    result = 4;
+  }
+  return result;
+};
+
+const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, scoreResults, pathForAccuracyOfReviews, pathForAccuracyOfReviewsFinal) => {
   reviewsToAnalyze = [];
+  reviewAccuracies = [];
   fs.createReadStream(pathToFile)
     .pipe(parse({delimiter: ':'}))
     .on('data', (row) => {
@@ -149,6 +167,40 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, sc
       csvWriter
         .writeRecords(data)
         .then(()=> console.log('The overall analytical scores written successfully'));
+
+      if (!fs.existsSync(pathForAccuracyOfReviewsFinal)){
+        fs.createReadStream(pathForAccuracyOfReviews)
+          .pipe(parse({delimiter: ':'}))
+          .on('data', (row) => {
+            reviewAccuracies.push(row[0])
+          })
+          .on('end', async () => {
+            reviewAccuracies.forEach(reviewAcc => {
+              const reviewAccSplit = reviewAcc.split('|');
+              const csvWriter = createCsvWriter({
+                path: `${pathForAccuracyOfReviewsFinal}`,
+                header: [
+                  {id: 'reviewId', title: 'Review Id'},
+                  {id: 'actualSentiment', title: 'Actual Sentiment'},
+                  {id: 'predictedSentiment', title: 'Predicted Sentiment'},
+                  {id: 'review', title: 'Review'},
+                ],
+                append: true
+              });
+              const data = [
+                {
+                  reviewId: reviewAccSplit[0],
+                  actualSentiment: reviewAccSplit[1],
+                  predictedSentiment: convertSentimentToValue(results[reviewAccSplit[0]-1].Sentiment),
+                  review: reviewAccSplit[2]
+                }
+              ];
+              csvWriter
+                .writeRecords(data)
+                .then(()=> console.log('The overall analytical scores written successfully'));
+            });
+          })
+      }
     });
 };
 
@@ -232,11 +284,11 @@ const getFoodItemsReviewAnalytics = (readStream, writeStream) => {
 };
 
 // getting the overall analytics on all available reviews
-getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed, overallAnalyticalScores);
+getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed, overallAnalyticalScores, basePathForAccuracyOfReviews, basePathForAccuracyOfReviews_final);
 // getting the overall analytics on all available reviews - with advance preprocessing
-getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, overallAdvanceAnalyticalScores);
-
-// getting the food item wise analytics on all available food item reviews
-getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}`, basePathToAnalyticalScores);
-// getting the food item wise analytics on all available food item reviews - with advance preprocessing
-getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}/advance`, basePathToAdvanceAnalyticalScores);
+// getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, overallAdvanceAnalyticalScores);
+//
+// // getting the food item wise analytics on all available food item reviews
+// getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}`, basePathToAnalyticalScores);
+// // getting the food item wise analytics on all available food item reviews - with advance preprocessing
+// getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}/advance`, basePathToAdvanceAnalyticalScores);
