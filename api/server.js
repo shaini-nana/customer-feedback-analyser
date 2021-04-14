@@ -83,6 +83,29 @@ app.get('/foodAnalytics', (req, res) => {
     });
 });
 
+app.get('/accuracy', (req, res) => {
+
+  const review = req.query.reviewName;
+  const readStream = req.query.isAdvance === 'true' ? `../accuracy/${review}/advance/overall_final.csv` : `../accuracy/${review}/overall_final.csv`;
+  logger.info(`Fetching overall analytics for review from: ${readStream}`);
+  const actualValue = [];
+  const predictedValue = [];
+
+  fs.createReadStream(readStream)
+    .pipe(parse({}))
+    .on('data', (row) => {
+      actualValue.push(row[1]);
+      predictedValue.push(row[2]);
+    })
+    .on('end', async () => {
+      console.log(`Ovarall analytics for review: ${review} file successfully processed`);
+      res.send({
+        actual: actualValue,
+        prediction: predictedValue
+      });
+    });
+});
+
 module.exports = {
   app,
   server
