@@ -73,8 +73,8 @@ if os.path.exists(filename):
     os.remove(filename)
 
 calculate_micro_accuracy_scores(actual_values, predicted_values, dirPath)
-calculate_macro_accuracy_scores(actual_values, predicted_values, dirPath)
 calculate_weighted_accuracy_scores(actual_values, predicted_values, dirPath)
+calculate_macro_accuracy_scores(actual_values, predicted_values, dirPath)
 
 dirPath = "../accuracy/" + selectedReviewsFile + "/advance"
 filename = dirPath + "/accuracy.csv"
@@ -82,8 +82,5 @@ if os.path.exists(filename):
     os.remove(filename)
 
 calculate_micro_accuracy_scores(actual_values_advance, predicted_values_advance, dirPath)
-calculate_macro_accuracy_scores(actual_values_advance, predicted_values_advance, dirPath)
 calculate_weighted_accuracy_scores(actual_values_advance, predicted_values_advance, dirPath)
-#
-# Path("../accuracy/" + selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
-# store_accuracy_values("../accuracy/" + selectedReviewsFile + "/advance/accuracy.csv")
+calculate_macro_accuracy_scores(actual_values_advance, predicted_values_advance, dirPath)
