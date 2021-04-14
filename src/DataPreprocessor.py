@@ -30,17 +30,17 @@ for foodRevCategory in foodItems:
 
 print("======= Start reading through the reviews =======")
 # looping through the reviews csv
-for row in reviewReader:
+for index, row in enumerate(reviewReader):
 
     # obtaining each review
     review = (row[0].strip().split('\t'))[0]
-    overallReviews.append(review)
+    overallReviews.append(str(index+1) + "|" + review)
 
     # lemmatize each review
     processedReview = lemmatize_sentence(review)
     # remove stop words in each review
     processedReview = remove_stop_words(processedReview)
-    overallReviewsAdvanced.append(processedReview)
+    overallReviewsAdvanced.append(str(index+1) + "|" + processedReview)
 
     # splitting the sentences of each review
     reviewSentences = tokenizer.tokenize(review)
@@ -75,18 +75,18 @@ Path("../reviews/processedReviews/" + selectedReviewsFile + "/advance").mkdir(pa
 with open("../reviews/processedReviews/" + selectedReviewsFile + "/advance/overall.csv", 'w', newline='') as file:
     writer = csv.writer(file)
     # loop through each food item to create specific directories to get the reviews
-    for index, overallReview in enumerate(overallReviewsAdvanced):
+    for overallReview in overallReviewsAdvanced:
         # write each food item specific reviews to the respective food item csv file
-        writer.writerow([index+1, overallReview])
+        writer.writerow([overallReview])
 
 
 # create/open csv files specific to each food item
 with open("../reviews/processedReviews/" + selectedReviewsFile + "/overall.csv", 'w', newline='') as file:
     writer = csv.writer(file)
     # loop through each food item to create specific directories to get the reviews
-    for index, overallReview in enumerate(overallReviews):
+    for overallReview in overallReviews:
         # write each food item specific reviews to the respective food item csv file
-        writer.writerow([index+1, overallReview])
+        writer.writerow([overallReview])
 
 
 if isCategorizedReviews:
