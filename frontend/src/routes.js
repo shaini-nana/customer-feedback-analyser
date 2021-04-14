@@ -4,6 +4,7 @@ import MainLayout from 'src/components/MainLayout';
 import NotFound from 'src/pages/NotFound';
 import Analytics from 'src/pages/Analytics';
 import FoodAnalytics from 'src/pages/FoodAnalytics';
+import Accuracy from 'src/pages/Accuracy';
 
 const routes = [
   {
@@ -12,6 +13,7 @@ const routes = [
     children: [
       { path: 'analytics', element: <Analytics /> },
       { path: 'detailAnalytics', element: <FoodAnalytics /> },
+      { path: 'accuracy', element: <Accuracy /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },

@@ -32,6 +32,11 @@ const items = [
     href: '/app/detailAnalytics',
     icon: ShoppingBagIcon,
     title: 'Detail Analytics'
+  },
+  {
+    href: '/app/accuracy',
+    icon: ShoppingBagIcon,
+    title: 'Accuracy'
   }
 ];
 
