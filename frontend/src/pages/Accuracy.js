@@ -12,7 +12,6 @@ import {
   Divider
 } from '@material-ui/core';
 import Budget from 'src/components/dashboard//Budget';
-import TotalCustomers from 'src/components/dashboard//TotalCustomers';
 
 import {
   green,
@@ -54,7 +53,7 @@ class Accuracy extends Component {
     return (
       <>
         <Helmet>
-          <title>Overall Analytics</title>
+          <title>Overall Accuracy Values</title>
         </Helmet>
         <Box
           sx={{
@@ -67,7 +66,7 @@ class Accuracy extends Component {
             <Card>
               <CardHeader
                 subheader="On all text based customer reviews"
-                title="Overall Analytics"
+                title="Overall Accuracy Values"
               />
               <Divider />
               <CardContent>
@@ -94,7 +93,7 @@ class Accuracy extends Component {
                           onChange={(event) => this.handleSubmit(event)}
                         />
                       )}
-                      label="Apply Advanced Data Preprocessing"
+                      label="With Advanced Data Preprocessing"
                     />
                   </Grid>
                 </Grid>
@@ -112,45 +111,6 @@ class Accuracy extends Component {
                 xl={3}
                 xs={12}
               >
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-              </Grid>
-
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <TotalCustomers
-                  totalNumberOfReviews={
-                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
-                  }
-                  cardTitle="Number Of Customer Reviews"
-                />
               </Grid>
               <Grid
                 item
@@ -239,83 +199,6 @@ class Accuracy extends Component {
                   cardTitle="Mixed Review Count"
                   colour={purple[600]}
                   isScore={false}
-                />
-              </Grid>
-
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.positiveScore : 0
-                  }
-                  totalScore={
-                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
-                  }
-                  cardTitle="Positive Review Score"
-                  colour={green[600]}
-                  isScore={true}
-                />
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.negativeScore : 0
-                  }
-                  totalScore={
-                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
-                  }
-                  cardTitle="Negative Review Score"
-                  colour={red[600]}
-                  isScore={true}
-                />
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.neutralScore : 0
-                  }
-                  totalScore={
-                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
-                  }
-                  cardTitle="Neutral Review Score"
-                  colour={orange[600]}
-                  isScore={true}
-                />
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                sm={6}
-                xl={3}
-                xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.mixedScore : 0
-                  }
-                  totalScore={
-                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
-                  }
-                  cardTitle="Mixed Review Score"
-                  colour={purple[600]}
-                  isScore={true}
                 />
               </Grid>
             </Grid>
