@@ -16,6 +16,10 @@ const params = {
 
 let reviewsToBeAnalyzed = [];
 let reviewsToBeAnalyzed_advance = [];
+
+let reviewAccuraciesToAnalyze = [];
+let reviewAccuraciesToAnalyze_advance = [];
+
 const foodItemWiseAnalytics = [];
 let overallAnalyticalScores = {
   fooItem: "Overall",
@@ -51,6 +55,7 @@ const basePathToAdvanceAnalyticalScores = `../reviews/AnalyzedReviewScores/${sel
 
 const basePathForAccuracyOfReviews = `../accuracy/${selectedReviewsFile}/overall.csv`;
 const basePathForAccuracyOfReviews_final = `../accuracy/${selectedReviewsFile}/overall_final.csv`;
+const basePathForAccuracyOfReviews_advance_final = `../accuracy/${selectedReviewsFile}/advance/overall_final.csv`;
 
 // @todo improve the food items list to be in line with scraped reviews
 const foodItems = ["burger", "pizza"];
@@ -117,9 +122,9 @@ const convertSentimentToValue = (sentiment) => {
   return result;
 };
 
-const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, scoreResults, pathForAccuracyOfReviews, pathForAccuracyOfReviewsFinal) => {
+const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, accuraciesToAnalyze, scoreResults, pathForAccuracyOfReviews, pathForAccuracyOfReviewsFinal) => {
   reviewsToAnalyze = [];
-  reviewAccuracies = [];
+  accuraciesToAnalyze = [];
   fs.createReadStream(pathToFile)
     .pipe(parse({delimiter: ':'}))
     .on('data', (row) => {
@@ -172,10 +177,10 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, sc
         fs.createReadStream(pathForAccuracyOfReviews)
           .pipe(parse({delimiter: ':'}))
           .on('data', (row) => {
-            reviewAccuracies.push(row[0])
+            accuraciesToAnalyze.push(row[0])
           })
           .on('end', async () => {
-            reviewAccuracies.forEach(reviewAcc => {
+            accuraciesToAnalyze.forEach(reviewAcc => {
               const reviewAccSplit = reviewAcc.split('|');
               const csvWriter = createCsvWriter({
                 path: `${pathForAccuracyOfReviewsFinal}`,
@@ -284,11 +289,11 @@ const getFoodItemsReviewAnalytics = (readStream, writeStream) => {
 };
 
 // getting the overall analytics on all available reviews
-getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed, overallAnalyticalScores, basePathForAccuracyOfReviews, basePathForAccuracyOfReviews_final);
+getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed, reviewAccuraciesToAnalyze, overallAnalyticalScores, basePathForAccuracyOfReviews, basePathForAccuracyOfReviews_final);
 // getting the overall analytics on all available reviews - with advance preprocessing
-// getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, overallAdvanceAnalyticalScores);
-//
-// // getting the food item wise analytics on all available food item reviews
-// getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}`, basePathToAnalyticalScores);
-// // getting the food item wise analytics on all available food item reviews - with advance preprocessing
-// getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}/advance`, basePathToAdvanceAnalyticalScores);
+getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, reviewAccuraciesToAnalyze_advance, overallAdvanceAnalyticalScores, basePathForAccuracyOfReviews, basePathForAccuracyOfReviews_advance_final);
+
+// getting the food item wise analytics on all available food item reviews
+getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}`, basePathToAnalyticalScores);
+// getting the food item wise analytics on all available food item reviews - with advance preprocessing
+getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}/advance`, basePathToAdvanceAnalyticalScores);
