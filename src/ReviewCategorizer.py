@@ -8,12 +8,13 @@ overallReviews = []
 overallReviewsAdvanced = []
 
 # add the reviews file name which you need to analyze reviews upon
-selectedReviewsFile = 'reviews_01'
+selectedReviewsFile = 'hilton'
 
 reviewFile = open('../reviews/scrapedReviews/' + selectedReviewsFile + '.csv')
 reviewReader = csv.reader(reviewFile)
 
-actualClassification = [1,2,1,1]
+# fill with proper human annotation - this needs to be done each time the analysis business is changed
+actualClassification = [1, 4, 1, 1, 1, 1, 1, 4, 1, 2, 2, 1, 4, 1, 1, 2, 1, 2, 2, 4, 4, 2, 4, 1, 1, 4, 1, 1, 1, 2, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 4, 4, 2]
 # looping through the reviews csv
 for index, row in enumerate(reviewReader):
 

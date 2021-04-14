@@ -18,16 +18,17 @@ class Accuracy extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiResponse: null
+      apiResponse: null,
+      selectedReviewsFile: 'hilton'
     };
   }
 
   componentDidMount() {
-    this.callOverallAnalyticalResultsAPI('http://localhost:4000/accuracy?reviewName=reviews_01&isAdvance=false');
+    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/accuracy?reviewName=${this.state.selectedReviewsFile}&isAdvance=false`);
   }
 
   handleSubmit = (event) => {
-    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/accuracy?reviewName=reviews_01&isAdvance=${event.target.checked}`);
+    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/accuracy?reviewName=${this.state.selectedReviewsFile}&isAdvance=${event.target.checked}`);
   };
 
   callOverallAnalyticalResultsAPI(url) {

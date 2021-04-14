@@ -45,7 +45,7 @@ let overallAdvanceAnalyticalScores = {
 };
 
 const basePathForProcessedReviews = "../reviews/processedReviews";
-const selectedReviewsFile = "reviews_01";
+const selectedReviewsFile = "hilton";
 
 const pathToOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/overall.csv`;
 const pathToAdvanceOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/advance/overall.csv`;
@@ -58,7 +58,7 @@ const basePathForAccuracyOfReviews_final = `../accuracy/${selectedReviewsFile}/o
 const basePathForAccuracyOfReviews_advance_final = `../accuracy/${selectedReviewsFile}/advance/overall_final.csv`;
 
 // @todo improve the food items list to be in line with scraped reviews
-const foodItems = ["burger", "pizza"];
+const foodItems = ["hilton", "rooms", "staff"];
 
 const analyzeSentiments = reviews => {
 

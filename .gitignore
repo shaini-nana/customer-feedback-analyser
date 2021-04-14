@@ -18,6 +18,7 @@ src/config.json
 
 # testing
 frontend/coverage
+src/test.py
 
 # production
 frontend/build

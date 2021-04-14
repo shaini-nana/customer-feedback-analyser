@@ -8,13 +8,13 @@ nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 
 # add the reviews file name which you need to analyze reviews upon
-selectedReviewsFile = 'reviews_01'
+selectedReviewsFile = 'hilton'
 
 reviewFile = open('../reviews/scrapedReviews/' + selectedReviewsFile + '.csv')
 reviewReader = csv.reader(reviewFile)
 
 # @todo improve the food items list to be in line with scraped reviews
-foodItems = ["burger", "pizza"]
+foodItems = ["hilton", "rooms", "staff"]
 # @todo initializing food item related reviews array
 foodReviews = []
 foodReviewsAdvance = []

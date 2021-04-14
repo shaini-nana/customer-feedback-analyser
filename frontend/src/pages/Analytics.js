@@ -27,16 +27,16 @@ class Analytics extends Component {
     super(props);
     this.state = {
       apiResponse: null,
-
+      selectedReviewsFile: 'hilton'
     };
   }
 
   componentDidMount() {
-    this.callOverallAnalyticalResultsAPI('http://localhost:4000/overallAnalytics?reviewName=reviews_01&isAdvance=false');
+    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/overallAnalytics?reviewName=${this.state.selectedReviewsFile}&isAdvance=false`);
   }
 
   handleSubmit = (event) => {
-    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/overallAnalytics?reviewName=reviews_01&isAdvance=${event.target.checked}`);
+    this.callOverallAnalyticalResultsAPI(`http://localhost:4000/overallAnalytics?reviewName=${this.state.selectedReviewsFile}&isAdvance=${event.target.checked}`);
   };
 
   callOverallAnalyticalResultsAPI(url) {
