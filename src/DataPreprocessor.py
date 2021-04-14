@@ -75,18 +75,18 @@ Path("../reviews/processedReviews/" + selectedReviewsFile + "/advance").mkdir(pa
 with open("../reviews/processedReviews/" + selectedReviewsFile + "/advance/overall.csv", 'w', newline='') as file:
     writer = csv.writer(file)
     # loop through each food item to create specific directories to get the reviews
-    for overallReview in overallReviewsAdvanced:
+    for index, overallReview in enumerate(overallReviewsAdvanced):
         # write each food item specific reviews to the respective food item csv file
-        writer.writerow([overallReview])
+        writer.writerow([index+1, overallReview])
 
 
 # create/open csv files specific to each food item
 with open("../reviews/processedReviews/" + selectedReviewsFile + "/overall.csv", 'w', newline='') as file:
     writer = csv.writer(file)
     # loop through each food item to create specific directories to get the reviews
-    for overallReview in overallReviews:
+    for index, overallReview in enumerate(overallReviews):
         # write each food item specific reviews to the respective food item csv file
-        writer.writerow([overallReview])
+        writer.writerow([index+1, overallReview])
 
 
 if isCategorizedReviews:
