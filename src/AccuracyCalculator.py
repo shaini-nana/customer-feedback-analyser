@@ -72,15 +72,31 @@ filename = dirPath + "/accuracy.csv"
 if os.path.exists(filename):
     os.remove(filename)
 
+print("Start calculate micro accuracy scores for overall accuracy for: ", selectedReviewsFile)
 calculate_micro_accuracy_scores(actual_values, predicted_values, dirPath)
+print("End calculate micro accuracy scores for overall accuracy for: ", selectedReviewsFile)
+
+print("Start calculate weighted accuracy scores for overall accuracy for: ", selectedReviewsFile)
 calculate_weighted_accuracy_scores(actual_values, predicted_values, dirPath)
+print("End calculate weighted accuracy scores for overall accuracy for: ", selectedReviewsFile)
+
+print("Start calculate macro accuracy scores for overall accuracy for: ", selectedReviewsFile)
 calculate_macro_accuracy_scores(actual_values, predicted_values, dirPath)
+print("Start calculate macro accuracy scores for overall accuracy for: ", selectedReviewsFile)
 
 dirPath = "../accuracy/" + selectedReviewsFile + "/advance"
 filename = dirPath + "/accuracy.csv"
 if os.path.exists(filename):
     os.remove(filename)
 
+print("Start calculate micro accuracy scores for overall advance accuracy for: ", selectedReviewsFile)
 calculate_micro_accuracy_scores(actual_values_advance, predicted_values_advance, dirPath)
+print("End calculate micro accuracy scores for overall advance accuracy for: ", selectedReviewsFile)
+
+print("Start calculate weighted accuracy scores for overall advance accuracy for: ", selectedReviewsFile)
 calculate_weighted_accuracy_scores(actual_values_advance, predicted_values_advance, dirPath)
+print("End calculate weighted accuracy scores for overall advance accuracy for: ", selectedReviewsFile)
+
+print("Start calculate macro accuracy scores for overall advance accuracy for: ", selectedReviewsFile)
 calculate_macro_accuracy_scores(actual_values_advance, predicted_values_advance, dirPath)
+print("End calculate macro accuracy scores for overall advance accuracy for: ", selectedReviewsFile)

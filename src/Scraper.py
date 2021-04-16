@@ -23,7 +23,6 @@ location_index = 0
 start = 0
 
 def get_review_rating(value):
-    print('Value: ', value)
     res = '3'
     if value == '5 star rating' or value == '4 star rating':
         res = '1'
