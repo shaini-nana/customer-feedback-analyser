@@ -22,6 +22,17 @@ review_count = 1
 location_index = 0
 start = 0
 
+def get_review_rating(value):
+    print('Value: ', value)
+    res = '3'
+    if value == '5 star rating' or value == '4 star rating':
+        res = '1'
+    elif value == '1 star rating' or value == '2 star rating':
+        res = '2'
+    elif value == '3 star rating':
+        res = '4'
+    return res
+
 filename = "../reviews/scrapedReviews/" + business + ".csv"
 if os.path.exists(filename):
     os.remove(filename)
@@ -49,9 +60,10 @@ for index, base_url in enumerate(base_urls, start=0):
                 review_date = div.find("div", {"class": "arrange__373c0__UHqhV gutter-1__373c0__2B2sK vertical-align-middle__373c0__2TQsQ border-color--default__373c0__2oFDT"}).findChildren()[-1].text
                 review_comment = div.find(
                     "p", {"class": "comment__373c0__1M-px css-n6i4z7"}).text
-                # text_file.write("{} : {} \n ".format(review_count, review_comment))
+
                 writer = csv.writer(csv_file)
-                writer.writerow([review_comment])
+                fileContent = str(review_count) + "|" + get_review_rating(star_rating) + "|" + review_comment
+                writer.writerow([fileContent])
                 review_count += 1
 
         # text_file.close()
