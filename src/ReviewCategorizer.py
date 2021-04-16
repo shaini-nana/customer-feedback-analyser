@@ -29,14 +29,4 @@ for index, row in enumerate(reviewReader):
     overallReviewsAdvanced.append(str(index+1) + "|" + processedReview)
 
 
-Path("../accuracy/" + selectedReviewsFile).mkdir(parents=True, exist_ok=True)
-Path("../accuracy/" + selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
 
-
-# create/open csv files specific to each food item
-with open("../accuracy/" + selectedReviewsFile + "/overall.csv", 'w', newline='') as file:
-    writer = csv.writer(file)
-    # loop through each food item to create specific directories to get the reviews
-    for overallReview in overallReviews:
-        # write each food item specific reviews to the respective food item csv file
-        writer.writerow([overallReview])
