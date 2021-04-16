@@ -54,6 +54,7 @@ const basePathToAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedRe
 const basePathToAdvanceAnalyticalScores = `../reviews/AnalyzedReviewScores/${selectedReviewsFile}/advance`;
 
 const basePathForAccuracyOfReviews = `../accuracy/${selectedReviewsFile}/overall.csv`;
+const basePathForAccuracyOfReviews_advance = `../accuracy/${selectedReviewsFile}/advance/overall.csv`;
 const basePathForAccuracyOfReviews_final = `../accuracy/${selectedReviewsFile}/overall_final.csv`;
 const basePathForAccuracyOfReviews_advance_final = `../accuracy/${selectedReviewsFile}/advance/overall_final.csv`;
 
@@ -173,39 +174,40 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, ac
         .writeRecords(data)
         .then(()=> console.log('The overall analytical scores written successfully'));
 
-      if (!fs.existsSync(pathForAccuracyOfReviewsFinal)){
-        fs.createReadStream(pathForAccuracyOfReviews)
-          .pipe(parse({delimiter: ':'}))
-          .on('data', (row) => {
-            accuraciesToAnalyze.push(row[0])
-          })
-          .on('end', async () => {
-            accuraciesToAnalyze.forEach(reviewAcc => {
-              const reviewAccSplit = reviewAcc.split('|');
-              const csvWriter = createCsvWriter({
-                path: `${pathForAccuracyOfReviewsFinal}`,
-                header: [
-                  {id: 'reviewId', title: 'Review Id'},
-                  {id: 'actualSentiment', title: 'Actual Sentiment'},
-                  {id: 'predictedSentiment', title: 'Predicted Sentiment'},
-                  {id: 'review', title: 'Review'},
-                ],
-                append: true
-              });
-              const data = [
-                {
-                  reviewId: reviewAccSplit[0],
-                  actualSentiment: reviewAccSplit[1],
-                  predictedSentiment: convertSentimentToValue(results[reviewAccSplit[0]-1].Sentiment),
-                  review: reviewAccSplit[2]
-                }
-              ];
-              csvWriter
-                .writeRecords(data)
-                .then(()=> console.log('The overall analytical scores written successfully'));
-            });
-          })
+      if (fs.existsSync(pathForAccuracyOfReviewsFinal)){
+        fs.unlinkSync(pathForAccuracyOfReviewsFinal);
       }
+      fs.createReadStream(pathForAccuracyOfReviews)
+        .pipe(parse({delimiter: ':'}))
+        .on('data', (row) => {
+          accuraciesToAnalyze.push(row[0])
+        })
+        .on('end', async () => {
+          accuraciesToAnalyze.forEach(reviewAcc => {
+            const reviewAccSplit = reviewAcc.split('|');
+            const csvWriter = createCsvWriter({
+              path: `${pathForAccuracyOfReviewsFinal}`,
+              header: [
+                {id: 'reviewId', title: 'Review Id'},
+                {id: 'actualSentiment', title: 'Actual Sentiment'},
+                {id: 'predictedSentiment', title: 'Predicted Sentiment'},
+                {id: 'review', title: 'Review'},
+              ],
+              append: true
+            });
+            const data = [
+              {
+                reviewId: reviewAccSplit[0],
+                actualSentiment: reviewAccSplit[1],
+                predictedSentiment: convertSentimentToValue(results[reviewAccSplit[0]-1].Sentiment),
+                review: reviewAccSplit[2]
+              }
+            ];
+            csvWriter
+              .writeRecords(data)
+              .then(()=> console.log('The overall analytical scores written successfully'));
+          });
+        })
     });
 };
 
@@ -291,7 +293,7 @@ const getFoodItemsReviewAnalytics = (readStream, writeStream) => {
 // getting the overall analytics on all available reviews
 getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed, reviewAccuraciesToAnalyze, overallAnalyticalScores, basePathForAccuracyOfReviews, basePathForAccuracyOfReviews_final);
 // getting the overall analytics on all available reviews - with advance preprocessing
-getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, reviewAccuraciesToAnalyze_advance, overallAdvanceAnalyticalScores, basePathForAccuracyOfReviews, basePathForAccuracyOfReviews_advance_final);
+getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, reviewAccuraciesToAnalyze_advance, overallAdvanceAnalyticalScores, basePathForAccuracyOfReviews_advance, basePathForAccuracyOfReviews_advance_final);
 
 // getting the food item wise analytics on all available food item reviews
 getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}`, basePathToAnalyticalScores);
