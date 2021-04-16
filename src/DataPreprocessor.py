@@ -33,14 +33,17 @@ print("======= Start reading through the reviews =======")
 for index, row in enumerate(reviewReader):
 
     # obtaining each review
-    review = (row[0].strip().split('\t'))[0]
-    overallReviews.append(str(index+1) + "|" + review)
+    content = ((row[0].strip().split('\t'))[0]).split('|')
+    review_number = content[0]
+    rating = content[1]
+    review = content[2]
+    overallReviews.append(str(review_number) + "|" + rating + "|" + review)
 
     # lemmatize each review
     processedReview = lemmatize_sentence(review)
     # remove stop words in each review
     processedReview = remove_stop_words(processedReview)
-    overallReviewsAdvanced.append(str(index+1) + "|" + processedReview)
+    overallReviewsAdvanced.append(str(review_number) + "|" + rating + "|" + processedReview)
 
     # splitting the sentences of each review
     reviewSentences = tokenizer.tokenize(review)
