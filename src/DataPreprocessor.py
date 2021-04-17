@@ -6,22 +6,16 @@ from StopWordRemoval import remove_stop_words
 
 nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-
 # add the reviews file name which you need to analyze reviews upon
-selectedReviewsFile = 'hilton'
-
+selectedReviewsFile = 'pizza-hut'
 reviewFile = open('../reviews/scrapedReviews/' + selectedReviewsFile + '.csv')
 reviewReader = csv.reader(reviewFile)
 
-# @todo improve the food items list to be in line with scraped reviews
-foodItems = ["hilton", "rooms", "staff"]
-# @todo initializing food item related reviews array
+foodItems = ["chicken", "beef", "seafood", "pepperoni", "wings", "bread", "cheese"]
 foodReviews = []
 foodReviewsAdvance = []
-
 overallReviews = []
 overallReviewsAdvanced = []
-
 isCategorizedReviews = bool(0)
 
 for foodRevCategory in foodItems:
