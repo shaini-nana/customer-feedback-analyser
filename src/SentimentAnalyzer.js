@@ -70,8 +70,14 @@ const analyzeSentiments = reviews => {
       comprehend.detectSentiment(params).promise().then(async data => {
         return data;
       }).catch(error => {
-        console.log(`Error occurred... ${JSON.stringify(error.stack)}`);
-        return error;
+        console.log(`Error occurred Retrying again. Error: ${JSON.stringify(error.stack)}`);
+        comprehend.detectSentiment(params).promise().then(async data => {
+          console.log("Success on second time");
+          return data;
+        }).catch(err => {
+          console.log(`Consecutively call failing to AWS Comprehend. Error: ${JSON.stringify(err.stack)}`);
+          return err;
+        });
       })
     );
   }
