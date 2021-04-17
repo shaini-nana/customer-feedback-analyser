@@ -47,14 +47,6 @@ def calculate_micro_accuracy_scores(actual, prediction, dirPath):
     Path(dirPath).mkdir(parents=True, exist_ok=True)
     store_accuracy_values(dirPath + "/accuracy.csv", 'micro', f1_micro, precision_micro, recall_micro)
 
-def calculate_macro_accuracy_scores(actual, prediction, dirPath):
-    f1_macro = f1_score(actual, prediction, average='macro')
-    precision_macro = precision_score(actual, prediction, average='macro')
-    recall_macro = recall_score(actual, prediction, average='macro')
-
-    Path(dirPath).mkdir(parents=True, exist_ok=True)
-    store_accuracy_values(dirPath + "/accuracy.csv", 'macro', f1_macro, precision_macro, recall_macro)
-
 def calculate_weighted_accuracy_scores(actual, prediction, dirPath):
     f1_weighted = f1_score(actual, prediction, average='weighted')
     precision_weighted = precision_score(actual, prediction, average='weighted')
@@ -62,6 +54,14 @@ def calculate_weighted_accuracy_scores(actual, prediction, dirPath):
 
     Path(dirPath).mkdir(parents=True, exist_ok=True)
     store_accuracy_values(dirPath + "/accuracy.csv", 'weighted', f1_weighted, precision_weighted, recall_weighted)
+
+# def calculate_macro_accuracy_scores(actual, prediction, dirPath):
+#     f1_macro = f1_score(actual, prediction, average='macro')
+#     precision_macro = precision_score(actual, prediction, average='macro')
+#     recall_macro = recall_score(actual, prediction, average='macro')
+#
+#     Path(dirPath).mkdir(parents=True, exist_ok=True)
+#     store_accuracy_values(dirPath + "/accuracy.csv", 'macro', f1_macro, precision_macro, recall_macro)
 
 
 read_accuracy_values()
