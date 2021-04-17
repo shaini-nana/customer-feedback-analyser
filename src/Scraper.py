@@ -46,7 +46,6 @@ def get_scraped_data():
 
     for index, base_url in enumerate(base_urls, start=0):
         if location_index == 0 or index >= location_index:
-            # text_file = open(filename, "a+")
             csv_file = open(filename, '+a')
             print("Scraping started for: ", base_url)
             html = urlopen(base_url)
@@ -63,16 +62,14 @@ def get_scraped_data():
                 for div in review_divs:
                     star_rating = div.find("span", {
                                            "class": "display--inline__373c0__2SfH_ border-color--default__373c0__30oMI"}).div['aria-label']
-                    review_date = div.find("div", {"class": "arrange__373c0__UHqhV gutter-1__373c0__2B2sK vertical-align-middle__373c0__2TQsQ border-color--default__373c0__2oFDT"}).findChildren()[-1].text
                     review_comment = div.find(
                         "p", {"class": "comment__373c0__1M-px css-n6i4z7"}).text
 
                     writer = csv.writer(csv_file)
-                    fileContent = str(review_count) + "|" + get_review_rating(star_rating) + "|" + review_comment
-                    writer.writerow([fileContent])
+                    file_content = str(review_count) + "|" + get_review_rating(star_rating) + "|" + review_comment
+                    writer.writerow([file_content])
                     review_count += 1
 
-            # text_file.close()
             csv_file.close()
             start = 0
             print("Percentage: {} Finished: {} BaseUrl Completed: {} ".format(
