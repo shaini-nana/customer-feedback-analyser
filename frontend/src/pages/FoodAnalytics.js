@@ -22,7 +22,7 @@ class FoodAnalytics extends Component {
     super(props);
     this.state = {
       apiResponse: null,
-      selectedReviewsFile: 'hilton'
+      selectedReviewsFile: 'pizza-hut'
     };
   }
 

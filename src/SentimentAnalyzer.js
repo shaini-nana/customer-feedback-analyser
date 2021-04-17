@@ -36,7 +36,7 @@ let overallAdvanceAnalyticalScores = {
 };
 
 const basePathForProcessedReviews = "../reviews/processedReviews";
-const selectedReviewsFile = "hilton";
+const selectedReviewsFile = "pizza-hut";
 
 const pathToOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/overall.csv`;
 const pathToAdvanceOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/advance/overall.csv`;
@@ -49,9 +49,7 @@ const basePathForAccuracyOfReviews_advance = `../accuracy/${selectedReviewsFile}
 const basePathForAccuracyOfReviews_final = `../accuracy/${selectedReviewsFile}/overall_final.csv`;
 const basePathForAccuracyOfReviews_advance_final = `../accuracy/${selectedReviewsFile}/advance/overall_final.csv`;
 
-// @todo improve the food items list to be in line with scraped reviews
-const foodItems = ["hilton", "rooms", "staff"];
-
+const foodItems = ["chicken", "beef", "seafood", "pepperoni", "wings", "bread", "cheese"];
 
 const comprehend = new AWS.Comprehend({
   apiVersion: '2017-11-27'
@@ -128,7 +126,7 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, ac
   reviewsToAnalyze = [];
   accuraciesToAnalyze = [];
   fs.createReadStream(pathToFile)
-    .pipe(parse({delimiter: ':'}))
+    .pipe(parse({}))
     .on('data', (row) => {
       reviewsToAnalyze.push(row[0])
     })
@@ -179,7 +177,7 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, ac
         fs.unlinkSync(pathForAccuracyOfReviewsFinal);
       }
       fs.createReadStream(pathForAccuracyOfReviews)
-        .pipe(parse({delimiter: ':'}))
+        .pipe(parse({}))
         .on('data', (row) => {
           accuraciesToAnalyze.push(row[0])
         })
@@ -236,7 +234,7 @@ const getFoodItemsReviewAnalytics = (readStream, writeStream) => {
 
     // per each food item open up the respective reviews file and start reading it
     fs.createReadStream(`${readStream}/${foodItems[index]}.csv`)
-      .pipe(parse({delimiter: ':'}))
+      .pipe(parse({}))
       .on('data', (row) => {
         foodItemWiseReviews.push(row[0])
       })
@@ -293,10 +291,12 @@ const getFoodItemsReviewAnalytics = (readStream, writeStream) => {
 
 // getting the overall analytics on all available reviews
 getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed, reviewAccuraciesToAnalyze, overallAnalyticalScores, basePathForAccuracyOfReviews, basePathForAccuracyOfReviews_final);
+
 // getting the overall analytics on all available reviews - with advance preprocessing
 getOverallReviewAnalytics(pathToAdvanceOverallAnalytics, basePathToAdvanceAnalyticalScores, reviewsToBeAnalyzed_advance, reviewAccuraciesToAnalyze_advance, overallAdvanceAnalyticalScores, basePathForAccuracyOfReviews_advance, basePathForAccuracyOfReviews_advance_final);
 
 // getting the food item wise analytics on all available food item reviews
 getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}`, basePathToAnalyticalScores);
+
 // getting the food item wise analytics on all available food item reviews - with advance preprocessing
 getFoodItemsReviewAnalytics(`${basePathForProcessedReviews}/${selectedReviewsFile}/advance`, basePathToAdvanceAnalyticalScores);
