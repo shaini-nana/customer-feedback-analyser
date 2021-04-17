@@ -5,15 +5,6 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 AWS.config.loadFromPath('./config.json');
 
-const comprehend = new AWS.Comprehend({
-  apiVersion: '2017-11-27'
-});
-
-const params = {
-  LanguageCode: 'en',
-  Text: 'Food is really good and tasty'
-};
-
 let reviewsToBeAnalyzed = [];
 let reviewsToBeAnalyzed_advance = [];
 
@@ -60,6 +51,16 @@ const basePathForAccuracyOfReviews_advance_final = `../accuracy/${selectedReview
 
 // @todo improve the food items list to be in line with scraped reviews
 const foodItems = ["hilton", "rooms", "staff"];
+
+
+const comprehend = new AWS.Comprehend({
+  apiVersion: '2017-11-27'
+});
+
+const params = {
+  LanguageCode: 'en',
+  Text: ''
+};
 
 const analyzeSentiments = reviews => {
 
