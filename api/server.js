@@ -90,7 +90,23 @@ app.get('/accuracy', (req, res) => {
   const statsReadStream = req.query.isAdvance === 'true' ? `../accuracy/${review}/advance/overall_final.csv` : `../accuracy/${review}/overall_final.csv`;
   logger.info(`Fetching overall analytics for review from: ${accuracyReadStream}`);
   const classificationScores = [];
-  const overallAccuracyValues = [];
+  let reviewCount = 0;
+  const overallAccuracyValue = {
+    totalCounts : {
+      count: 0,
+      positiveCount: 0,
+      negativeCount: 0,
+      neutralCount: 0,
+      mixedCount: 0,
+    },
+    correctCounts : {
+      count: 0,
+      positiveCount: 0,
+      negativeCount: 0,
+      neutralCount: 0,
+      mixedCount: 0,
+    }
+  };
 
   fs.createReadStream(accuracyReadStream)
     .pipe(parse({}))
@@ -101,20 +117,51 @@ app.get('/accuracy', (req, res) => {
         precision: row[2],
         recall: row[3],
       });
-      console.log(classificationScores)
     })
     .on('end', async () => {
-      console.log(`Ovarall accuracies for review: ${review} file successfully processed`);
+      console.log(`Overall classification scores for review: ${review} file successfully processed`);
 
       fs.createReadStream(statsReadStream)
         .pipe(parse({}))
         .on('data', (row) => {
-          console.log(row)
+          reviewCount += 1;
+          const actual = row[1];
+          const pred = row[2];
+          if (actual == pred) {
+            // adds the total correct classifications
+            overallAccuracyValue.correctCounts.count += 1;
+            if (actual == '1') {
+              overallAccuracyValue.correctCounts.positiveCount += 1;
+            }
+            else if (actual == '2') {
+              overallAccuracyValue.correctCounts.negativeCount += 1;
+            }
+            else if (actual == '3') {
+              overallAccuracyValue.correctCounts.neutralCount += 1;
+            }
+            else if (actual == '4') {
+              overallAccuracyValue.correctCounts.mixedCount += 1;
+            }
+          }
+
+          if (actual == '1') {
+            overallAccuracyValue.totalCounts.positiveCount += 1;
+          }
+          else if (actual == '2') {
+            overallAccuracyValue.totalCounts.negativeCount += 1;
+          }
+          else if (actual == '3') {
+            overallAccuracyValue.totalCounts.neutralCount += 1;
+          }
+          else if (actual == '4') {
+            overallAccuracyValue.totalCounts.mixedCount += 1;
+          }
         })
         .on('end', async () => {
-          console.log(`Ovarall accuracies for review: ${review} file successfully processed`);
+          console.log(`Overall accuracies for review: ${review} file successfully processed`);
+          overallAccuracyValue.totalCounts.count = reviewCount;
           res.send({
-            overallAccuracyValues,
+            overallAccuracyValue,
             classificationScores
           });
         });
