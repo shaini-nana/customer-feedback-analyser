@@ -86,24 +86,38 @@ app.get('/foodAnalytics', (req, res) => {
 app.get('/accuracy', (req, res) => {
 
   const review = req.query.reviewName;
-  const readStream = req.query.isAdvance === 'true' ? `../accuracy/${review}/advance/accuracy.csv` : `../accuracy/${review}/accuracy.csv`;
-  logger.info(`Fetching overall analytics for review from: ${readStream}`);
-  const result = [];
+  const accuracyReadStream = req.query.isAdvance === 'true' ? `../accuracy/${review}/advance/accuracy.csv` : `../accuracy/${review}/accuracy.csv`;
+  const statsReadStream = req.query.isAdvance === 'true' ? `../accuracy/${review}/advance/overall_final.csv` : `../accuracy/${review}/overall_final.csv`;
+  logger.info(`Fetching overall analytics for review from: ${accuracyReadStream}`);
+  const classificationScores = [];
+  const overallAccuracyValues = [];
 
-  fs.createReadStream(readStream)
+  fs.createReadStream(accuracyReadStream)
     .pipe(parse({}))
     .on('data', (row) => {
-      result.push({
+      classificationScores.push({
         type: row[0],
         f1: row[1],
         precision: row[2],
         recall: row[3],
       });
-      console.log(result)
+      console.log(classificationScores)
     })
     .on('end', async () => {
       console.log(`Ovarall accuracies for review: ${review} file successfully processed`);
-      res.send(result);
+
+      fs.createReadStream(statsReadStream)
+        .pipe(parse({}))
+        .on('data', (row) => {
+          console.log(row)
+        })
+        .on('end', async () => {
+          console.log(`Ovarall accuracies for review: ${review} file successfully processed`);
+          res.send({
+            overallAccuracyValues,
+            classificationScores
+          });
+        });
     });
 });
 
