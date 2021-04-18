@@ -1,8 +1,3 @@
-https://www.yelp.com/biz/pizza-hut-madison-54
-https://www.yelp.com/biz/pizza-hut-attalla-4
-https://www.yelp.com/biz/pizza-hut-brooklyn-12
-https://www.yelp.com/biz/pizza-hut-woodside
-https://www.yelp.com/biz/pizza-hut-ozone-park
 https://www.yelp.com/biz/pizza-hut-new-york-30
 https://www.yelp.com/biz/pizza-hut-rego-park
 https://www.yelp.com/biz/pizza-hut-flushing-2
@@ -18,3 +13,13 @@ https://www.yelp.com/biz/pizza-hut-brooklyn-16
 https://www.yelp.com/biz/pizza-hut-north-bergen
 https://www.yelp.com/biz/pizza-hut-middle-village-5
 https://www.yelp.com/biz/pizza-hut-bayonne
+https://www.yelp.com/biz/pizza-hut-new-york-27
+https://www.yelp.com/biz/pizza-hut-jersey-city-5
+https://www.yelp.com/biz/pizza-hut-guttenberg-3
+https://www.yelp.com/biz/pizza-hut-lexington-36
+https://www.yelp.com/biz/pizza-hut-kearny
+https://www.yelp.com/biz/pizza-hut-bayside
+https://www.yelp.com/biz/pizza-hut-las-vegas-26
+https://www.yelp.com/biz/pizza-hut-las-vegas-62
+https://www.yelp.com/biz/pizza-hut-austin-58
+https://www.yelp.com/biz/pizza-hut-austin-15
