@@ -106,7 +106,26 @@ const getAnalyticalScores = (results, scoreRecorder) => {
     } else if (result.Sentiment === 'NEGATIVE') {
       analyticalScore.overallNegativeReviewCount ++;
     } else if (result.Sentiment === 'NEUTRAL') {
-      analyticalScore.overallNeutralReviewCount ++;
+      if (result.SentimentScore.Positive >= result.SentimentScore.Negative) {
+        // positive is greater than negative
+        if (result.SentimentScore.Positive >= result.SentimentScore.Mixed) {
+          // Positive is the second greatest
+          analyticalScore.overallPositiveReviewCount ++;
+        } else {
+          // mixed is the second greatest
+          analyticalScore.overallMixedReviewCount ++;
+        }
+
+      } else {
+        // negative is greater than positive
+        if (result.SentimentScore.Negative >= result.SentimentScore.Mixed) {
+          // negative is the second greatest
+          analyticalScore.overallNegativeReviewCount ++;
+        } else {
+          // mixed is the second greatest
+          analyticalScore.overallMixedReviewCount ++;
+        }
+      }
     } else {
       analyticalScore.overallMixedReviewCount ++;
     }
@@ -114,14 +133,33 @@ const getAnalyticalScores = (results, scoreRecorder) => {
   return analyticalScore;
 };
 
-const convertSentimentToValue = (sentiment) => {
+const convertSentimentToValue = (sentimentResult) => {
   let result;
-  if (sentiment === 'POSITIVE') {
+  if (sentimentResult.Sentiment === 'POSITIVE') {
     result = 1;
-  } else if (sentiment === 'NEGATIVE') {
+  } else if (sentimentResult.Sentiment === 'NEGATIVE') {
     result = 2;
-  } else if (sentiment === 'NEUTRAL') {
-    result = 3;
+  } else if (sentimentResult.Sentiment === 'NEUTRAL') {
+    if (sentimentResult.SentimentScore.Positive >= sentimentResult.SentimentScore.Negative) {
+      // positive is greater than negative
+      if (sentimentResult.SentimentScore.Positive >= sentimentResult.SentimentScore.Mixed) {
+        // Positive is the second greatest
+        result = 1;
+      } else {
+        // mixed is the second greatest
+        result = 4;
+      }
+
+    } else {
+      // negative is greater than positive
+      if (sentimentResult.SentimentScore.Negative >= sentimentResult.SentimentScore.Mixed) {
+        // negative is the second greatest
+        result = 2;
+      } else {
+        // mixed is the second greatest
+        result = 4;
+      }
+    }
   } else {
     result = 4;
   }
@@ -204,7 +242,7 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, ac
               {
                 reviewId: reviewAccSplit[0],
                 actualSentiment: reviewAccSplit[1],
-                predictedSentiment: convertSentimentToValue(results[reviewAccSplit[0]-1].Sentiment),
+                predictedSentiment: convertSentimentToValue(results[reviewAccSplit[0]-1]),
                 review: reviewAccSplit[2]
               }
             ];
