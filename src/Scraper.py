@@ -29,8 +29,6 @@ def get_review_rating(value):
         res = '1'
     elif value == '1 star rating' or value == '2 star rating':
         res = '2'
-    elif value == '3 star rating':
-        res = '4'
     return res
 
 

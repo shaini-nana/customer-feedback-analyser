@@ -134,7 +134,7 @@ const getAnalyticalScores = (results, scoreRecorder) => {
 };
 
 const convertSentimentToValue = (sentimentResult) => {
-  let result;
+  let result = 3;
   if (sentimentResult.Sentiment === 'POSITIVE') {
     result = 1;
   } else if (sentimentResult.Sentiment === 'NEGATIVE') {
@@ -145,9 +145,6 @@ const convertSentimentToValue = (sentimentResult) => {
       if (sentimentResult.SentimentScore.Positive >= sentimentResult.SentimentScore.Mixed) {
         // Positive is the second greatest
         result = 1;
-      } else {
-        // mixed is the second greatest
-        result = 4;
       }
 
     } else {
@@ -155,13 +152,8 @@ const convertSentimentToValue = (sentimentResult) => {
       if (sentimentResult.SentimentScore.Negative >= sentimentResult.SentimentScore.Mixed) {
         // negative is the second greatest
         result = 2;
-      } else {
-        // mixed is the second greatest
-        result = 4;
       }
     }
-  } else {
-    result = 4;
   }
   return result;
 };

@@ -96,14 +96,12 @@ app.get('/accuracy', (req, res) => {
       count: 0,
       positiveCount: 0,
       negativeCount: 0,
-      neutralCount: 0,
       mixedCount: 0,
     },
     correctCounts : {
       count: 0,
       positiveCount: 0,
       negativeCount: 0,
-      neutralCount: 0,
       mixedCount: 0,
     }
   };
@@ -137,9 +135,6 @@ app.get('/accuracy', (req, res) => {
               overallAccuracyValue.correctCounts.negativeCount += 1;
             }
             else if (actual == '3') {
-              overallAccuracyValue.correctCounts.neutralCount += 1;
-            }
-            else if (actual == '4') {
               overallAccuracyValue.correctCounts.mixedCount += 1;
             }
           }
@@ -151,9 +146,6 @@ app.get('/accuracy', (req, res) => {
             overallAccuracyValue.totalCounts.negativeCount += 1;
           }
           else if (actual == '3') {
-            overallAccuracyValue.totalCounts.neutralCount += 1;
-          }
-          else if (actual == '4') {
             overallAccuracyValue.totalCounts.mixedCount += 1;
           }
         })
