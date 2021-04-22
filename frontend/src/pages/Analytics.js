@@ -17,7 +17,6 @@ import TotalCustomers from 'src/components/dashboard//TotalCustomers';
 import {
   green,
   red,
-  purple,
   orange
 } from '@material-ui/core/colors';
 
@@ -218,9 +217,9 @@ class Analytics extends Component {
               >
                 <Budget
                   score={
-                    this.state.apiResponse ? this.state.apiResponse.neutralReviewCount : 0
+                    this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
                   }
-                  cardTitle="Neutral Review Count"
+                  cardTitle="Mixed Review Count"
                   colour={orange[600]}
                   isScore={false}
                 />
@@ -231,16 +230,7 @@ class Analytics extends Component {
                 sm={6}
                 xl={3}
                 xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
-                  }
-                  cardTitle="Mixed Review Count"
-                  colour={purple[600]}
-                  isScore={false}
-                />
-              </Grid>
+              />
 
               <Grid
                 item
@@ -251,12 +241,12 @@ class Analytics extends Component {
               >
                 <Budget
                   score={
-                    this.state.apiResponse ? this.state.apiResponse.positiveScore : 0
+                    this.state.apiResponse ? this.state.apiResponse.positiveReviewCount : 0
                   }
                   totalScore={
                     this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
                   }
-                  cardTitle="Positive Review Score"
+                  cardTitle="Positive Review Percentage"
                   colour={green[600]}
                   isScore={true}
                 />
@@ -270,12 +260,12 @@ class Analytics extends Component {
               >
                 <Budget
                   score={
-                    this.state.apiResponse ? this.state.apiResponse.negativeScore : 0
+                    this.state.apiResponse ? this.state.apiResponse.negativeReviewCount : 0
                   }
                   totalScore={
                     this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
                   }
-                  cardTitle="Negative Review Score"
+                  cardTitle="Negative Review Percentage"
                   colour={red[600]}
                   isScore={true}
                 />
@@ -289,12 +279,12 @@ class Analytics extends Component {
               >
                 <Budget
                   score={
-                    this.state.apiResponse ? this.state.apiResponse.neutralScore : 0
+                    this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
                   }
                   totalScore={
                     this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
                   }
-                  cardTitle="Neutral Review Score"
+                  cardTitle="Mixed Review Percentage"
                   colour={orange[600]}
                   isScore={true}
                 />
@@ -305,19 +295,7 @@ class Analytics extends Component {
                 sm={6}
                 xl={3}
                 xs={12}
-              >
-                <Budget
-                  score={
-                    this.state.apiResponse ? this.state.apiResponse.mixedScore : 0
-                  }
-                  totalScore={
-                    this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
-                  }
-                  cardTitle="Mixed Review Score"
-                  colour={purple[600]}
-                  isScore={true}
-                />
-              </Grid>
+              />
             </Grid>
           </Container>
         </Box>

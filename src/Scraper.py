@@ -4,7 +4,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import csv
 
-business = 'pizza-hut'
+business = 'mcdonalds'
 filename = "../reviews/scrapedReviews/" + business + ".csv"
 
 base_urls = []

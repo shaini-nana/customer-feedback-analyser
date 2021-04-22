@@ -18,8 +18,8 @@ const populateIcon = (isScore) => {
 
 const roundOffValueIfScore = (isScore, value, total, isAnalytics) => {
   if (isScore) {
-    const score = Math.round(value * 100) / 100;
-    return `${score}/${total}`;
+    const score = Math.round((value / total) * 100 * 100) / 100;
+    return `${score}%`;
   }
   if (isAnalytics) {
     const score = Math.round(value * 100) / 100;
