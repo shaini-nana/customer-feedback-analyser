@@ -11,7 +11,6 @@ import TotalCustomers from 'src/components/dashboard//TotalCustomers';
 import {
   green,
   red,
-  purple,
   orange
 } from '@material-ui/core/colors';
 import { startCase, toLower } from 'lodash';
@@ -174,9 +173,9 @@ class FoodAnalytics extends Component {
             >
               <Budget
                 score={
-                  foodItemAnalytics.neutralReviewCount || 0
+                  foodItemAnalytics.mixedReviewCount || 0
                 }
-                cardTitle="Neutral Review Count"
+                cardTitle="Mixed Review Count"
                 colour={orange[600]}
                 isScore={false}
               />
@@ -187,16 +186,7 @@ class FoodAnalytics extends Component {
               sm={6}
               xl={3}
               xs={12}
-            >
-              <Budget
-                score={
-                  foodItemAnalytics.mixedReviewCount || 0
-                }
-                cardTitle="Mixed Review Count"
-                colour={purple[600]}
-                isScore={false}
-              />
-            </Grid>
+            />
 
             <Grid
               item
@@ -207,7 +197,7 @@ class FoodAnalytics extends Component {
             >
               <Budget
                 score={
-                  foodItemAnalytics.positiveScore || 0
+                  foodItemAnalytics.positiveReviewCount || 0
                 }
                 totalScore={
                   foodItemAnalytics.totalNumberOfReviews || 0
@@ -226,7 +216,7 @@ class FoodAnalytics extends Component {
             >
               <Budget
                 score={
-                  foodItemAnalytics.negativeScore || 0
+                  foodItemAnalytics.negativeReviewCount || 0
                 }
                 totalScore={
                   foodItemAnalytics.totalNumberOfReviews || 0
@@ -245,12 +235,12 @@ class FoodAnalytics extends Component {
             >
               <Budget
                 score={
-                  foodItemAnalytics.neutralScore || 0
+                  foodItemAnalytics.mixedReviewCount || 0
                 }
                 totalScore={
                   foodItemAnalytics.totalNumberOfReviews || 0
                 }
-                cardTitle="Neutral Review Score"
+                cardTitle="Mixed Review Score"
                 colour={orange[600]}
                 isScore={true}
               />
@@ -261,19 +251,7 @@ class FoodAnalytics extends Component {
               sm={6}
               xl={3}
               xs={12}
-            >
-              <Budget
-                score={
-                  foodItemAnalytics.mixedScore || 0
-                }
-                totalScore={
-                  foodItemAnalytics.totalNumberOfReviews || 0
-                }
-                cardTitle="Mixed Review Score"
-                colour={purple[600]}
-                isScore={true}
-              />
-            </Grid>
+            />
             <Grid
               item
               lg={3}
