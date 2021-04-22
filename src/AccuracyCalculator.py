@@ -16,7 +16,7 @@ f1_weighted = 0
 precision_weighted = 0
 recall_weighted = 0
 
-selectedReviewsFile = 'pizza-hut'
+selectedReviewsFile = 'mcdonalds'
 
 def read_accuracy_values():
     reviewFile = open('../accuracy/' + selectedReviewsFile + '/overall_final.csv')

@@ -36,7 +36,7 @@ let overallAdvanceAnalyticalScores = {
 };
 
 const basePathForProcessedReviews = "../reviews/processedReviews";
-const selectedReviewsFile = "pizza-hut";
+const selectedReviewsFile = "mcdonalds";
 
 const pathToOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/overall.csv`;
 const pathToAdvanceOverallAnalytics = `${basePathForProcessedReviews}/${selectedReviewsFile}/advance/overall.csv`;
@@ -49,7 +49,11 @@ const basePathForAccuracyOfReviews_advance = `../accuracy/${selectedReviewsFile}
 const basePathForAccuracyOfReviews_final = `../accuracy/${selectedReviewsFile}/overall_final.csv`;
 const basePathForAccuracyOfReviews_advance_final = `../accuracy/${selectedReviewsFile}/advance/overall_final.csv`;
 
-const foodItems = ["chicken", "beef", "seafood", "pepperoni", "wings", "bread", "cheese"];
+// pizza-hut
+// const foodItems = ["chicken", "beef", "seafood", "pepperoni", "wings", "bread", "cheese"];
+
+// mcdonalds
+const foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"];
 
 const comprehend = new AWS.Comprehend({
   apiVersion: '2017-11-27'
