@@ -7,11 +7,15 @@ from StopWordRemoval import remove_stop_words
 nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 # add the reviews file name which you need to analyze reviews upon
-selectedReviewsFile = 'pizza-hut'
+selectedReviewsFile = 'mcdonalds'
 reviewFile = open('../reviews/scrapedReviews/' + selectedReviewsFile + '.csv')
 reviewReader = csv.reader(reviewFile)
 
-foodItems = ["chicken", "beef", "seafood", "pepperoni", "wings", "bread", "cheese"]
+# pizza-hut
+# foodItems = ["chicken", "beef", "seafood", "pepperoni", "wings", "bread", "cheese"]
+
+# mcdonalds
+foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"]
 foodReviews = []
 foodReviewsAdvance = []
 overallReviews = []
