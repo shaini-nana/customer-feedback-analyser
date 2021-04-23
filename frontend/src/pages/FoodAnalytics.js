@@ -13,7 +13,7 @@ import {
   red,
   orange
 } from '@material-ui/core/colors';
-import { startCase, toLower } from 'lodash';
+import { startCase, toLower, size } from 'lodash';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class FoodAnalytics extends Component {
@@ -32,6 +32,91 @@ class FoodAnalytics extends Component {
   handleSubmit = (event) => {
     this.callOverallAnalyticalResultsAPI(`http://localhost:4000/foodAnalytics?reviewName=${this.state.selectedReviewsFile}&isAdvance=${event.target.checked}`);
   };
+
+  getBestPerformingItem() {
+    const items = this.state.apiResponse;
+    let bestItem = {};
+    for (let index = 0; index < size(items); index++) {
+      if (index === 0) {
+        bestItem = items[index];
+      } else if ((items[index].positiveReviewCount / items[index].totalNumberOfReviews) > (bestItem.positiveReviewCount / bestItem.totalNumberOfReviews)) {
+        bestItem = items[index];
+      }
+    }
+
+    return (
+      <Container maxWidth={false}>
+        <Grid
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
+              }
+              totalScore={
+                this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+              }
+              cardTitle="Best Performing Item:"
+              colour={green[600]}
+              isTrend={true}
+              trend={startCase(toLower(bestItem.foodItem))}
+            />
+          </Grid>
+
+        </Grid>
+      </Container>
+    );
+  }
+
+  getWorstPerformingItem() {
+    const items = this.state.apiResponse;
+    let worstItem = {};
+    for (let index = 0; index < size(items); index++) {
+      if (index === 0) {
+        worstItem = items[index];
+      } else if ((items[index].negativeReviewCount / items[index].totalNumberOfReviews) > (worstItem.negativeReviewCount / worstItem.totalNumberOfReviews)) {
+        worstItem = items[index];
+      }
+    }
+
+    return (
+      <Container maxWidth={false}>
+        <Grid
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
+              }
+              totalScore={
+                this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+              }
+              cardTitle="Worst Performing Item:"
+              colour={red[600]}
+              isTrend={true}
+              trend={startCase(toLower(worstItem.foodItem))}
+            />
+          </Grid>
+        </Grid>
+      </Container>
+    );
+  }
 
   callOverallAnalyticalResultsAPI(url) {
     fetch(url)
@@ -358,7 +443,8 @@ class FoodAnalytics extends Component {
             xs={12}
           >
           </Grid>
-
+          { this.state.apiResponse ? this.getBestPerformingItem() : null }
+          { this.state.apiResponse ? this.getWorstPerformingItem() : null }
           { this.state.apiResponse ? this.displayFoodAnalytics() : null }
         </Box>
       </>
