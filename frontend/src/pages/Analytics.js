@@ -26,7 +26,8 @@ class Analytics extends Component {
     super(props);
     this.state = {
       apiResponse: null,
-      selectedReviewsFile: 'mcdonalds'
+      selectedReviewsFile: 'mcdonalds',
+      trend: null
     };
   }
 
@@ -38,6 +39,22 @@ class Analytics extends Component {
     this.callOverallAnalyticalResultsAPI(`http://localhost:4000/overallAnalytics?reviewName=${this.state.selectedReviewsFile}&isAdvance=${event.target.checked}`);
   };
 
+  findBusinessTrend = (stats) => {
+    let trend = 'Neutral';
+    if (stats.positiveScore > stats.negativeScore) {
+      if (stats.positiveScore > stats.neutralScore) {
+        // positive trend
+        trend = 'Positive';
+      }
+    } else if (stats.negativeScore > stats.neutralScore) {
+      // negative trend
+      trend = 'Negative';
+    }
+    this.setState(
+      { trend }
+    );
+  };
+
   callOverallAnalyticalResultsAPI(url) {
     fetch(url)
       .then((res) => res.text())
@@ -45,8 +62,82 @@ class Analytics extends Component {
         this.setState(
           { apiResponse: JSON.parse(res) }
         );
+        this.findBusinessTrend(this.state.apiResponse);
       })
       .catch((err) => console.log(`${err}`));
+  }
+
+  displayTrend() {
+    if (this.state.trend === 'Positive') {
+      return (
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Budget
+            score={
+              this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
+            }
+            totalScore={
+              this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+            }
+            cardTitle="Business Trend:"
+            colour={green[600]}
+            isTrend={true}
+            trend={this.state.trend}
+          />
+        </Grid>
+      );
+    }
+    if (this.state.trend === 'Negative') {
+      return (
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <Budget
+            score={
+              this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
+            }
+            totalScore={
+              this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+            }
+            cardTitle="Business Trend:"
+            colour={red[600]}
+            isTrend={true}
+            trend={this.state.trend}
+          />
+        </Grid>
+      );
+    }
+    return (
+      <Grid
+        item
+        lg={3}
+        sm={6}
+        xl={3}
+        xs={12}
+      >
+        <Budget
+          score={
+            this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
+          }
+          totalScore={
+            this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+          }
+          cardTitle="Business Trend:"
+          colour={orange[600]}
+          isTrend={true}
+          trend={this.state.trend}
+        />
+      </Grid>
+    );
   }
 
   render() {
@@ -296,6 +387,7 @@ class Analytics extends Component {
                 xl={3}
                 xs={12}
               />
+              { this.state.trend ? this.displayTrend() : null }
             </Grid>
           </Container>
         </Box>
