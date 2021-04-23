@@ -14,6 +14,7 @@ import {
   red,
   blue
 } from '@material-ui/core/colors';
+import { startCase, toLower } from 'lodash';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Accuracy extends Component {
@@ -448,7 +449,7 @@ class Accuracy extends Component {
             <Card>
               <CardHeader
                 subheader="On all text based customer reviews"
-                title="Overall Accuracies"
+                title={`Overall Accuracies For: ${startCase(toLower(this.state.selectedReviewsFile))}`}
               />
               <Divider />
               <CardContent>
