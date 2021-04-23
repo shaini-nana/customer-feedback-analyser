@@ -283,7 +283,7 @@ class FoodAnalytics extends Component {
             <Card>
               <CardHeader
                 subheader="On all text based customer reviews"
-                title="Detail Food Item Analytics"
+                title={`Detail Food Item Analytics For: ${startCase(toLower(this.state.selectedReviewsFile))}`}
               />
               <Divider />
               <CardContent>

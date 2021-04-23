@@ -19,6 +19,7 @@ import {
   red,
   orange
 } from '@material-ui/core/colors';
+import { startCase, toLower } from 'lodash';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Analytics extends Component {
@@ -157,7 +158,7 @@ class Analytics extends Component {
             <Card>
               <CardHeader
                 subheader="On all text based customer reviews"
-                title="Overall Analytics"
+                title={`Overall Analytics For: ${startCase(toLower(this.state.selectedReviewsFile))}`}
               />
               <Divider />
               <CardContent>
