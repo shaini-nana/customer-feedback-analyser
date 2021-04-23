@@ -16,10 +16,14 @@ const populateIcon = (isScore) => {
   return <AssessmentIcon />;
 };
 
-const roundOffValueIfScore = (isScore, value, total, isAnalytics) => {
+const roundOffValueIfScore = (isScore, value, total, isAnalytics, isAnalyticPercentages) => {
   if (isScore) {
     const score = Math.round((value / total) * 100 * 100) / 100;
     return `${score}%`;
+  }
+  if (isAnalytics && isAnalyticPercentages) {
+    const score = Math.round((value / total) * 100 * 100) / 100;
+    return `${value} (${score}%)`;
   }
   if (isAnalytics) {
     const score = Math.round(value * 100) / 100;
@@ -50,7 +54,7 @@ const Budget = (props) => (
             color="textPrimary"
             variant="h1"
           >
-            {roundOffValueIfScore(props.isScore, props.score, props.totalScore, props.isAnalytics)}
+            {roundOffValueIfScore(props.isScore, props.score, props.totalScore, props.isAnalytics, props.isAnalyticPercentages)}
           </Typography>
         </Grid>
         <Grid item>
@@ -75,7 +79,8 @@ Budget.propTypes = {
   cardTitle: PropTypes.string,
   colour: PropTypes.string,
   isScore: PropTypes.bool,
-  isAnalytics: PropTypes.bool
+  isAnalytics: PropTypes.bool,
+  isAnalyticPercentages: PropTypes.bool
 };
 
 export default Budget;

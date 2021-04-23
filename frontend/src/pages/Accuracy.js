@@ -10,7 +10,9 @@ import Budget from 'src/components/dashboard//Budget';
 import {
   green,
   purple,
-  orange
+  orange,
+  red,
+  blue
 } from '@material-ui/core/colors';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -42,16 +44,16 @@ class Accuracy extends Component {
       .catch((err) => console.log(`${err}`));
   }
 
-  displayFoodAnalytics() {
+  displayClassificationScores() {
     const displayedResult = [];
-    this.state.apiResponse.forEach((accuracyValues) => {
+    this.state.apiResponse.classificationScores.forEach((accuracyValues) => {
       displayedResult.push(
         <Container maxWidth={false}>
 
           <Card>
             <CardHeader
               subheader={accuracyValues.type}
-              title="F1 Score Calculation Mode:"
+              title="F1 / Precision / Recall Scores Calculation Mode:"
             />
           </Card>
           <Grid
@@ -165,6 +167,271 @@ class Accuracy extends Component {
     return displayedResult;
   }
 
+  displayOverallAccuracies() {
+    return (
+      <Container maxWidth={false}>
+
+        <Card>
+          <CardHeader
+            subheader="Actual Statistics"
+            title="Review Counts:"
+          />
+        </Card>
+        <Grid
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.totalCounts.count : 0
+              }
+              cardTitle="Total Number of Reviews"
+              colour={blue[600]}
+              isScore={false}
+              isAnalytics={true}
+            />
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.totalCounts.positiveCount : 0
+              }
+              cardTitle="Total Number of Positive Reviews"
+              colour={green[600]}
+              isScore={false}
+              isAnalytics={true}
+            />
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.totalCounts.negativeCount : 0
+              }
+              cardTitle="Total Number of Negative Reviews"
+              colour={red[600]}
+              isScore={false}
+              isAnalytics={true}
+            />
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.totalCounts.mixedCount : 0
+              }
+              cardTitle="Total Number of Mixed Reviews"
+              colour={orange[600]}
+              isScore={false}
+              isAnalytics={true}
+            />
+          </Grid>
+
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+        </Grid>
+      </Container>
+    );
+  }
+
+  displayPredictionAccuracies() {
+    return (
+      <Container maxWidth={false}>
+
+        <Card>
+          <CardHeader
+            subheader="Successful Prediction Statistics"
+            title="Correct Predictions:"
+          />
+        </Card>
+        <Grid
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.correctCounts.count : 0
+              }
+              totalScore={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.totalCounts.count : 0
+              }
+              cardTitle="Total Correct Classifications"
+              colour={blue[600]}
+              isScore={false}
+              isAnalytics={true}
+              isAnalyticPercentages={true}
+            />
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.correctCounts.positiveCount : 0
+              }
+              cardTitle="Correct Positive Classifications"
+              colour={green[600]}
+              isScore={false}
+              isAnalytics={true}
+              isAnalyticPercentages={false}
+            />
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.correctCounts.negativeCount : 0
+              }
+              cardTitle="Correct Negative Classifications"
+              colour={red[600]}
+              isScore={false}
+              isAnalytics={true}
+              isAnalyticPercentages={false}
+            />
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+            <Budget
+              score={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.correctCounts.mixedCount : 0
+              }
+              cardTitle="Correct Mixed Classifications"
+              colour={orange[600]}
+              isScore={false}
+              isAnalytics={true}
+              isAnalyticPercentages={false}
+            />
+          </Grid>
+
+          <Grid
+            item
+            lg={3}
+            sm={6}
+            xl={3}
+            xs={12}
+          >
+          </Grid>
+        </Grid>
+      </Container>
+    );
+  }
+
   render() {
     return (
       <>
@@ -257,11 +524,13 @@ class Accuracy extends Component {
           >
           </Grid>
 
-          { this.state.apiResponse ? this.displayFoodAnalytics() : null }
+          { this.state.apiResponse ? this.displayClassificationScores() : null }
+          { this.state.apiResponse ? this.displayOverallAccuracies() : null }
+          { this.state.apiResponse ? this.displayPredictionAccuracies() : null }
+
         </Box>
       </>
     );
   }
 }
-
 export default Accuracy;
