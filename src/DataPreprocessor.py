@@ -1,8 +1,8 @@
 import csv
 import nltk
 from pathlib import Path
-from Lemmatizer import lemmatize_sentence
-from StopWordRemoval import remove_stop_words
+from Lemmatizer import Lemmatizer
+from StopWordRemover import StopWordRemover
 
 nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
@@ -27,6 +27,8 @@ class DataPreprocessor:
         self.overallReviews = []
         self.overallReviewsAdvanced = []
         self.isCategorizedReviews = bool(0)
+        self.lemmatizer = Lemmatizer()
+        self.stopWordRemover = StopWordRemover()
 
     def preprocess_reviews(self):
         reviewFile = open(self.scrapeLocation)
@@ -48,9 +50,9 @@ class DataPreprocessor:
             self.overallReviews.append(str(review_number) + "|" + rating + "|" + review)
 
             # lemmatize each review
-            processedReview = lemmatize_sentence(review)
+            processedReview = self.lemmatizer.lemmatize_sentence(review)
             # remove stop words in each review
-            processedReview = remove_stop_words(processedReview)
+            processedReview = self.stopWordRemover.remove_stop_words(processedReview)
             self.overallReviewsAdvanced.append(str(review_number) + "|" + rating + "|" + processedReview)
 
             # splitting the sentences of each review
@@ -60,9 +62,9 @@ class DataPreprocessor:
             for reviewSentence in reviewSentences:
                 processedSentence = reviewSentence.lower()
                 # lemmatize each review sentence
-                processedSentenceWithAdvancePreprocessing = lemmatize_sentence(processedSentence)
+                processedSentenceWithAdvancePreprocessing = self.lemmatizer.lemmatize_sentence(processedSentence)
                 # remove stop words in each sentence
-                processedSentenceWithAdvancePreprocessing = remove_stop_words(processedSentenceWithAdvancePreprocessing)
+                processedSentenceWithAdvancePreprocessing = self.stopWordRemover.remove_stop_words(processedSentenceWithAdvancePreprocessing)
 
                 # looping each review sentence through each food item
                 # to check if the review sentence is about any of the identified food items
