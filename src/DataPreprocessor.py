@@ -6,10 +6,6 @@ from StopWordRemoval import remove_stop_words
 
 nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
-# add the reviews file name which you need to analyze reviews upon
-selectedReviewsFile = 'subway'
-reviewFile = open('../reviews/scrapedReviews/' + selectedReviewsFile + '.csv')
-reviewReader = csv.reader(reviewFile)
 
 # pizza-hut
 # foodItems = ["chicken", "beef", "seafood", "pepperoni", "wings", "bread", "cheese"]
@@ -18,126 +14,139 @@ reviewReader = csv.reader(reviewFile)
 # foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"]
 
 # subway
-foodItems = ["chicken", "beef", "cheese", "sandwich"]
+# foodItems = ["chicken", "beef", "cheese", "sandwich"]
 
-foodReviews = []
-foodReviewsAdvance = []
-overallReviews = []
-overallReviewsAdvanced = []
-isCategorizedReviews = bool(0)
+class DataPreprocessor:
 
-for foodRevCategory in foodItems:
-    foodReviews.append([])
-    foodReviewsAdvance.append([])
+    def __init__(self, businessName):
+        self.selectedReviewsFile = businessName
+        self.scrapeLocation = '../reviews/scrapedReviews/' + self.selectedReviewsFile + '.csv'
+        self.foodItems = ["chicken", "beef", "cheese", "sandwich"]
+        self.foodReviews = []
+        self.foodReviewsAdvance = []
+        self.overallReviews = []
+        self.overallReviewsAdvanced = []
+        self.isCategorizedReviews = bool(0)
 
-print("======= Start reading through the reviews =======")
-# looping through the reviews csv
-for index, row in enumerate(reviewReader):
+    def preprocess_reviews(self):
+        reviewFile = open(self.scrapeLocation)
+        reviewReader = csv.reader(reviewFile)
 
-    # obtaining each review
-    content = ((row[0].strip().split('\t'))[0]).split('|')
-    review_number = content[0]
-    rating = content[1]
-    review = content[2]
-    overallReviews.append(str(review_number) + "|" + rating + "|" + review)
+        for foodRevCategory in self.foodItems:
+            self.foodReviews.append([])
+            self.foodReviewsAdvance.append([])
 
-    # lemmatize each review
-    processedReview = lemmatize_sentence(review)
-    # remove stop words in each review
-    processedReview = remove_stop_words(processedReview)
-    overallReviewsAdvanced.append(str(review_number) + "|" + rating + "|" + processedReview)
+        print("======= Start reading through the reviews =======")
+        # looping through the reviews csv
+        for index, row in enumerate(reviewReader):
 
-    # splitting the sentences of each review
-    reviewSentences = tokenizer.tokenize(review)
+            # obtaining each review
+            content = ((row[0].strip().split('\t'))[0]).split('|')
+            review_number = content[0]
+            rating = content[1]
+            review = content[2]
+            self.overallReviews.append(str(review_number) + "|" + rating + "|" + review)
 
-    # looping through each sentence of the focused review
-    for reviewSentence in reviewSentences:
-        processedSentence = reviewSentence.lower()
-        # lemmatize each review sentence
-        processedSentenceWithAdvancePreprocessing = lemmatize_sentence(processedSentence)
-        # remove stop words in each sentence
-        processedSentenceWithAdvancePreprocessing = remove_stop_words(processedSentenceWithAdvancePreprocessing)
+            # lemmatize each review
+            processedReview = lemmatize_sentence(review)
+            # remove stop words in each review
+            processedReview = remove_stop_words(processedReview)
+            self.overallReviewsAdvanced.append(str(review_number) + "|" + rating + "|" + processedReview)
 
-        # looping each review sentence through each food item
-        # to check if the review sentence is about any of the identified food items
-        for inx, foodItem in enumerate(foodItems):
-            if foodItem in  processedSentence:
-                foodReviews[inx].append(processedSentence)
-                foodReviewsAdvance[inx].append(processedSentenceWithAdvancePreprocessing)
+            # splitting the sentences of each review
+            reviewSentences = tokenizer.tokenize(review)
 
-for reviewCategories in foodReviews:
-    if len(reviewCategories) != 0:
-        isCategorizedReviews = bool(10)
-        break
+            # looping through each sentence of the focused review
+            for reviewSentence in reviewSentences:
+                processedSentence = reviewSentence.lower()
+                # lemmatize each review sentence
+                processedSentenceWithAdvancePreprocessing = lemmatize_sentence(processedSentence)
+                # remove stop words in each sentence
+                processedSentenceWithAdvancePreprocessing = remove_stop_words(processedSentenceWithAdvancePreprocessing)
 
+                # looping each review sentence through each food item
+                # to check if the review sentence is about any of the identified food items
+                for inx, foodItem in enumerate(self.foodItems):
+                    if foodItem in  processedSentence:
+                        self.foodReviews[inx].append(processedSentence)
+                        self.foodReviewsAdvance[inx].append(processedSentenceWithAdvancePreprocessing)
 
-# create a directory within the DataPreprocessor directory
-# to store all the preprocessed reviews
-Path("../reviews/processedReviews/" + selectedReviewsFile).mkdir(parents=True, exist_ok=True)
-Path("../reviews/processedReviews/" + selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
-
-# create/open csv files specific to each food item
-with open("../reviews/processedReviews/" + selectedReviewsFile + "/advance/overall.csv", 'w', newline='') as file:
-    writer = csv.writer(file)
-    # loop through each food item to create specific directories to get the reviews
-    for overallReview in overallReviewsAdvanced:
-        # write each food item specific reviews to the respective food item csv file
-        writer.writerow([overallReview])
+        for reviewCategories in self.foodReviews:
+            if len(reviewCategories) != 0:
+                self.isCategorizedReviews = bool(10)
+                break
 
 
-# create/open csv files specific to each food item
-with open("../reviews/processedReviews/" + selectedReviewsFile + "/overall.csv", 'w', newline='') as file:
-    writer = csv.writer(file)
-    # loop through each food item to create specific directories to get the reviews
-    for overallReview in overallReviews:
-        # write each food item specific reviews to the respective food item csv file
-        writer.writerow([overallReview])
+        # create a directory within the DataPreprocessor directory
+        # to store all the preprocessed reviews
+        Path("../reviews/processedReviews/" + self.selectedReviewsFile).mkdir(parents=True, exist_ok=True)
+        Path("../reviews/processedReviews/" + self.selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
 
-Path("../accuracy/" + selectedReviewsFile).mkdir(parents=True, exist_ok=True)
-Path("../accuracy/" + selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
-
-
-# create/open csv files specific to each food item
-with open("../accuracy/" + selectedReviewsFile + "/overall.csv", 'w', newline='') as file:
-    writer = csv.writer(file)
-    # loop through each food item to create specific directories to get the reviews
-    for overallReview in overallReviews:
-        # write each food item specific reviews to the respective food item csv file
-        writer.writerow([overallReview])
-
-with open("../accuracy/" + selectedReviewsFile + "/advance/overall.csv", 'w', newline='') as file:
-    writer = csv.writer(file)
-    # loop through each food item to create specific directories to get the reviews
-    for overallReview in overallReviewsAdvanced:
-        # write each food item specific reviews to the respective food item csv file
-        writer.writerow([overallReview])
-
-
-if isCategorizedReviews:
-    print("Filtered food reviews FOUND !!!")
-    # create a directory within the DataPreprocessor directory
-    # to store all the preprocessed each food item specific reviews
-    Path("../reviews/processedReviews/" + selectedReviewsFile).mkdir(parents=True, exist_ok=True)
-
-    # loop through each food item to create specific directories to get the reviews
-    for inx, foodItem in enumerate(foodItems):
         # create/open csv files specific to each food item
-        with open("../reviews/processedReviews/" + selectedReviewsFile + "/" + foodItem + ".csv", 'w', newline='') as file:
+        with open("../reviews/processedReviews/" + self.selectedReviewsFile + "/advance/overall.csv", 'w', newline='') as file:
             writer = csv.writer(file)
-            # write each food item specific reviews to the respective food item csv file
-            for foodReview in foodReviews[inx]:
-                writer.writerow([foodReview])
+            # loop through each food item to create specific directories to get the reviews
+            for overallReview in self.overallReviewsAdvanced:
+                # write each food item specific reviews to the respective food item csv file
+                writer.writerow([overallReview])
 
-    Path("../reviews/processedReviews/" + selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
 
-    # loop through each food item to create specific directories to get the reviews
-    for inx, foodItem in enumerate(foodItems):
         # create/open csv files specific to each food item
-        with open("../reviews/processedReviews/" + selectedReviewsFile + "/advance" + "/" + foodItem + ".csv", 'w', newline='') as file:
+        with open("../reviews/processedReviews/" + self.selectedReviewsFile + "/overall.csv", 'w', newline='') as file:
             writer = csv.writer(file)
-            # write each food item specific reviews to the respective food item csv file
-            for foodReview in foodReviewsAdvance[inx]:
-                writer.writerow([foodReview])
+            # loop through each food item to create specific directories to get the reviews
+            for overallReview in self.overallReviews:
+                # write each food item specific reviews to the respective food item csv file
+                writer.writerow([overallReview])
 
-else:
-    print("Filtered food reviews NOT found !!!")
+        Path("../accuracy/" + self.selectedReviewsFile).mkdir(parents=True, exist_ok=True)
+        Path("../accuracy/" + self.selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
+
+
+        # create/open csv files specific to each food item
+        with open("../accuracy/" + self.selectedReviewsFile + "/overall.csv", 'w', newline='') as file:
+            writer = csv.writer(file)
+            # loop through each food item to create specific directories to get the reviews
+            for overallReview in self.overallReviews:
+                # write each food item specific reviews to the respective food item csv file
+                writer.writerow([overallReview])
+
+        with open("../accuracy/" + self.selectedReviewsFile + "/advance/overall.csv", 'w', newline='') as file:
+            writer = csv.writer(file)
+            # loop through each food item to create specific directories to get the reviews
+            for overallReview in self.overallReviewsAdvanced:
+                # write each food item specific reviews to the respective food item csv file
+                writer.writerow([overallReview])
+
+
+        if self.isCategorizedReviews:
+            print("Filtered food reviews FOUND !!!")
+            # create a directory within the DataPreprocessor directory
+            # to store all the preprocessed each food item specific reviews
+            Path("../reviews/processedReviews/" + self.selectedReviewsFile).mkdir(parents=True, exist_ok=True)
+
+            # loop through each food item to create specific directories to get the reviews
+            for inx, foodItem in enumerate(self.foodItems):
+                # create/open csv files specific to each food item
+                with open("../reviews/processedReviews/" + self.selectedReviewsFile + "/" + foodItem + ".csv", 'w', newline='') as file:
+                    writer = csv.writer(file)
+                    # write each food item specific reviews to the respective food item csv file
+                    for foodReview in self.foodReviews[inx]:
+                        writer.writerow([foodReview])
+
+            Path("../reviews/processedReviews/" + self.selectedReviewsFile + "/advance").mkdir(parents=True, exist_ok=True)
+
+            # loop through each food item to create specific directories to get the reviews
+            for inx, foodItem in enumerate(self.foodItems):
+                # create/open csv files specific to each food item
+                with open("../reviews/processedReviews/" + self.selectedReviewsFile + "/advance" + "/" + foodItem + ".csv", 'w', newline='') as file:
+                    writer = csv.writer(file)
+                    # write each food item specific reviews to the respective food item csv file
+                    for foodReview in self.foodReviewsAdvance[inx]:
+                        writer.writerow([foodReview])
+
+        else:
+            print("Filtered food reviews NOT found !!!")
+
+dataPreprocessor = DataPreprocessor("subway")
+dataPreprocessor.preprocess_reviews()
