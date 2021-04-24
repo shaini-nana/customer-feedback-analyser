@@ -46,32 +46,40 @@ class FoodAnalytics extends Component {
 
     return (
       <Container maxWidth={false}>
-        <Grid
-          container
-          spacing={3}
+        <Box
+          sx={{
+            backgroundColor: 'background.default',
+            minHeight: '100%',
+            py: 3
+          }}
         >
           <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
+            container
+            spacing={3}
           >
-            <Budget
-              score={
-                this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
-              }
-              totalScore={
-                this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
-              }
-              cardTitle="Best Performing Item:"
-              colour={green[600]}
-              isTrend={true}
-              trend={startCase(toLower(bestItem.foodItem))}
-            />
-          </Grid>
+            <Grid
+              item
+              lg={3}
+              sm={6}
+              xl={3}
+              xs={12}
+            >
+              <Budget
+                score={
+                  this.state.apiResponse ? this.state.apiResponse.mixedReviewCount : 0
+                }
+                totalScore={
+                  this.state.apiResponse ? this.state.apiResponse.totalNumberOfReviews : 0
+                }
+                cardTitle="Best Performing Item:"
+                colour={green[600]}
+                isTrend={true}
+                trend={startCase(toLower(bestItem.foodItem))}
+              />
+            </Grid>
 
-        </Grid>
+          </Grid>
+        </Box>
       </Container>
     );
   }
