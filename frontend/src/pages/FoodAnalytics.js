@@ -21,7 +21,7 @@ class FoodAnalytics extends Component {
     super(props);
     this.state = {
       apiResponse: null,
-      selectedReviewsFile: 'mcdonalds'
+      selectedReviewsFile: 'pizza-hut'
     };
   }
 
@@ -43,6 +43,8 @@ class FoodAnalytics extends Component {
         bestItem = items[index];
       }
     }
+
+    console.log(`best Item: ${JSON.stringify(bestItem)}`);
 
     return (
       <Container maxWidth={false}>

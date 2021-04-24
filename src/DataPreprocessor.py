@@ -8,7 +8,7 @@ nltk.download('punkt')
 tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 
 # pizza-hut
-# foodItems = ["chicken", "beef", "seafood", "pepperoni", "wings", "bread", "cheese"]
+# foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "cheese"]
 
 # mcdonalds
 # foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"]
@@ -21,7 +21,7 @@ class DataPreprocessor:
     def __init__(self, businessName):
         self.selectedReviewsFile = businessName
         self.scrapeLocation = '../reviews/scrapedReviews/' + self.selectedReviewsFile + '.csv'
-        self.foodItems = ["chicken", "beef", "cheese", "sandwich"]
+        self.foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "cheese"]
         self.foodReviews = []
         self.foodReviewsAdvance = []
         self.overallReviews = []
@@ -150,5 +150,5 @@ class DataPreprocessor:
         else:
             print("Filtered food reviews NOT found !!!")
 
-dataPreprocessor = DataPreprocessor("subway")
+dataPreprocessor = DataPreprocessor("pizza-hut")
 dataPreprocessor.preprocess_reviews()
