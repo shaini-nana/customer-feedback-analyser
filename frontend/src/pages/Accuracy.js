@@ -376,11 +376,14 @@ class Accuracy extends Component {
               score={
                 this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.correctCounts.positiveCount : 0
               }
+              totalScore={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.totalCounts.positiveCount : 0
+              }
               cardTitle="Correct Positive Classifications"
               colour={green[600]}
               isScore={false}
               isAnalytics={true}
-              isAnalyticPercentages={false}
+              isAnalyticPercentages={true}
             />
           </Grid>
           <Grid
@@ -394,11 +397,14 @@ class Accuracy extends Component {
               score={
                 this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.correctCounts.negativeCount : 0
               }
+              totalScore={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.totalCounts.negativeCount : 0
+              }
               cardTitle="Correct Negative Classifications"
               colour={red[600]}
               isScore={false}
               isAnalytics={true}
-              isAnalyticPercentages={false}
+              isAnalyticPercentages={true}
             />
           </Grid>
           <Grid
@@ -412,11 +418,14 @@ class Accuracy extends Component {
               score={
                 this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.correctCounts.mixedCount : 0
               }
+              totalScore={
+                this.state.apiResponse ? this.state.apiResponse.overallAccuracyValue.totalCounts.mixedCount : 0
+              }
               cardTitle="Correct Mixed Classifications"
               colour={orange[600]}
               isScore={false}
               isAnalytics={true}
-              isAnalyticPercentages={false}
+              isAnalyticPercentages={true}
             />
           </Grid>
 
