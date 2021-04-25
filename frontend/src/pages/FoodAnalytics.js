@@ -305,7 +305,7 @@ class FoodAnalytics extends Component {
                 totalScore={
                   foodItemAnalytics.totalNumberOfReviews || 0
                 }
-                cardTitle="Positive Review Score"
+                cardTitle="Positive Review Percentage"
                 colour={green[600]}
                 isScore={true}
               />
@@ -324,7 +324,7 @@ class FoodAnalytics extends Component {
                 totalScore={
                   foodItemAnalytics.totalNumberOfReviews || 0
                 }
-                cardTitle="Negative Review Score"
+                cardTitle="Negative Review Percentage"
                 colour={red[600]}
                 isScore={true}
               />
@@ -343,7 +343,7 @@ class FoodAnalytics extends Component {
                 totalScore={
                   foodItemAnalytics.totalNumberOfReviews || 0
                 }
-                cardTitle="Mixed Review Score"
+                cardTitle="Mixed Review Percentage"
                 colour={orange[600]}
                 isScore={true}
               />

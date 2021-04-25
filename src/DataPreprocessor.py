@@ -16,6 +16,9 @@ tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
 # subway
 # foodItems = ["chicken", "beef", "cheese", "sandwich"]
 
+# the-cheesecake-factory
+# foodItems = ["salad", "chicken", "bbq", "pasta"]
+
 class DataPreprocessor:
 
     def __init__(self, businessName):

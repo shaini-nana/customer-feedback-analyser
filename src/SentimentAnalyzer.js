@@ -16,6 +16,9 @@ const foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "che
 // subway
 // const foodItems = ["chicken", "beef", "cheese", "sandwich"];
 
+// the-cheesecake-factory
+// const foodItems = ["salad", "chicken", "bbq", "pasta"];
+
 let reviewsToBeAnalyzed = [];
 let reviewsToBeAnalyzed_advance = [];
 
@@ -76,11 +79,13 @@ const analyzeSentiments = reviews => {
     params.Text = reviews[index];
     results.push(
       comprehend.detectSentiment(params).promise().then(async data => {
+        data.reviewId = (reviews[index].split('|'))[0];
         return data;
       }).catch(error => {
         console.log(`Error occurred Retrying again. Error: ${JSON.stringify(error.stack)}`);
         comprehend.detectSentiment(params).promise().then(async data => {
           console.log("Success on second time");
+          data.reviewId = (reviews[index].split('|'))[0];
           return data;
         }).catch(err => {
           console.log(`Consecutively call failing to AWS Comprehend. Error: ${JSON.stringify(err.stack)}`);
@@ -166,6 +171,17 @@ const convertSentimentToValue = (sentimentResult) => {
   return result;
 };
 
+const findResult = (results, revId) => {
+  let correctRes;
+  for (let index = 0; index < results.length; index ++) {
+    if (results[index].reviewId === revId) {
+      correctRes = results[index];
+      break;
+    }
+  }
+  return correctRes;
+};
+
 const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, accuraciesToAnalyze, scoreResults, pathForAccuracyOfReviews, pathForAccuracyOfReviewsFinal) => {
   reviewsToAnalyze = [];
   accuraciesToAnalyze = [];
@@ -215,7 +231,7 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, ac
       ];
       csvWriter
         .writeRecords(data)
-        .then(()=> console.log('The overall analytical scores written successfully'));
+        .then(()=> console.log('The overall classification completed'));
 
       if (fs.existsSync(pathForAccuracyOfReviewsFinal)){
         fs.unlinkSync(pathForAccuracyOfReviewsFinal);
@@ -242,7 +258,7 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, ac
               {
                 reviewId: reviewAccSplit[0],
                 actualSentiment: reviewAccSplit[1],
-                predictedSentiment: convertSentimentToValue(results[reviewAccSplit[0]-1]),
+                predictedSentiment: convertSentimentToValue(findResult(results, reviewAccSplit[0])),
                 review: reviewAccSplit[2]
               }
             ];
@@ -328,7 +344,7 @@ const getFoodItemsReviewAnalytics = (readStream, writeStream) => {
         ];
         csvWriter
           .writeRecords(data)
-          .then(()=> console.log('The overall analytical scores written successfully'));
+          .then(()=> console.log('The detail analytical scores written successfully'));
       });
   }
 };

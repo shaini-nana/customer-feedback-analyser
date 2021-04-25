@@ -75,6 +75,6 @@ class Scraper:
                     (index/self.base_urls.__len__())*100, index, base_url))
 
 
-scraper = Scraper("subway")
+scraper = Scraper("the-cheesecake-factory")
 scraper.get_review_web_links()
 scraper.get_scraped_data()
