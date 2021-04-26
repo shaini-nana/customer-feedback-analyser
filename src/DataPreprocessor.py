@@ -1,5 +1,6 @@
 import csv
 import nltk
+import datetime
 from pathlib import Path
 from Lemmatizer import Lemmatizer
 from StopWordRemover import StopWordRemover
@@ -153,5 +154,14 @@ class DataPreprocessor:
         else:
             print("Filtered food reviews NOT found !!!")
 
+
+startPreprocessingTime = datetime.datetime.now()
+print("Preprocessing started at: ", startPreprocessingTime)
+
 dataPreprocessor = DataPreprocessor("mcdonalds")
 dataPreprocessor.preprocess_reviews()
+
+endPreprocessingTime = datetime.datetime.now()
+print("Preprocessing completed at: ", endPreprocessingTime)
+
+print("Total time taken for preprocessing ", (endPreprocessingTime - startPreprocessingTime).total_seconds())
