@@ -2,16 +2,17 @@ const fs = require('fs');
 const parse = require('csv-parse');
 const AWS = require("aws-sdk");
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const { get } = require('lodash');
 
 AWS.config.loadFromPath('./config.json');
 
-const selectedReviewsFile = "pizza-hut";
+const selectedReviewsFile = "mcdonalds";
 
 // pizza-hut
-const foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "cheese"];
+// const foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "cheese"];
 
 // mcdonalds
-// const foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"];
+const foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"];
 
 // subway
 // const foodItems = ["chicken", "beef", "cheese", "sandwich"];
@@ -109,19 +110,19 @@ const printResults = score => {
 const getAnalyticalScores = (results, scoreRecorder) => {
   let analyticalScore = scoreRecorder;
   results.forEach(result => {
-    analyticalScore.overallPositiveScore += result.SentimentScore.Positive;
-    analyticalScore.overallNegativeScore += result.SentimentScore.Negative;
-    analyticalScore.overallNeutralScore += result.SentimentScore.Neutral;
-    analyticalScore.overallMixedScore += result.SentimentScore.Mixed;
+    analyticalScore.overallPositiveScore += get(result, 'SentimentScore.Positive');
+    analyticalScore.overallNegativeScore += get(result, 'SentimentScore.Negative');
+    analyticalScore.overallNeutralScore += get(result, 'SentimentScore.Neutral');
+    analyticalScore.overallMixedScore += get(result, 'SentimentScore.Mixed');
 
     if (result.Sentiment === 'POSITIVE') {
       analyticalScore.overallPositiveReviewCount ++;
     } else if (result.Sentiment === 'NEGATIVE') {
       analyticalScore.overallNegativeReviewCount ++;
     } else if (result.Sentiment === 'NEUTRAL') {
-      if (result.SentimentScore.Positive >= result.SentimentScore.Negative) {
+      if (get(result, 'SentimentScore.Positive') >= get(result, 'SentimentScore.Negative')) {
         // positive is greater than negative
-        if (result.SentimentScore.Positive >= result.SentimentScore.Mixed) {
+        if (get(result, 'SentimentScore.Positive') >= get(result, 'SentimentScore.Mixed')) {
           // Positive is the second greatest
           analyticalScore.overallPositiveReviewCount ++;
         } else {
@@ -131,7 +132,7 @@ const getAnalyticalScores = (results, scoreRecorder) => {
 
       } else {
         // negative is greater than positive
-        if (result.SentimentScore.Negative >= result.SentimentScore.Mixed) {
+        if (get(result, 'SentimentScore.Negative') >= get(result, 'SentimentScore.Mixed')) {
           // negative is the second greatest
           analyticalScore.overallNegativeReviewCount ++;
         } else {

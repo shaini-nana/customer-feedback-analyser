@@ -27,7 +27,7 @@ class Analytics extends Component {
     super(props);
     this.state = {
       apiResponse: null,
-      selectedReviewsFile: 'pizza-hut',
+      selectedReviewsFile: 'mcdonalds',
       trend: null
     };
   }

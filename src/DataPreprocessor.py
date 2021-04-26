@@ -24,7 +24,7 @@ class DataPreprocessor:
     def __init__(self, businessName):
         self.selectedReviewsFile = businessName
         self.scrapeLocation = '../reviews/scrapedReviews/' + self.selectedReviewsFile + '.csv'
-        self.foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "cheese"]
+        self.foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"]
         self.foodReviews = []
         self.foodReviewsAdvance = []
         self.overallReviews = []
@@ -153,5 +153,5 @@ class DataPreprocessor:
         else:
             print("Filtered food reviews NOT found !!!")
 
-dataPreprocessor = DataPreprocessor("pizza-hut")
+dataPreprocessor = DataPreprocessor("mcdonalds")
 dataPreprocessor.preprocess_reviews()
