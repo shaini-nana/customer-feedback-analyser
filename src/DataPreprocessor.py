@@ -155,13 +155,13 @@ class DataPreprocessor:
             print("Filtered food reviews NOT found !!!")
 
 
-startPreprocessingTime = datetime.datetime.now()
-print("Preprocessing started at: ", startPreprocessingTime)
+startprocessingTime = datetime.datetime.now()
+print("Preprocessing started at: ", startprocessingTime)
 
 dataPreprocessor = DataPreprocessor("mcdonalds")
 dataPreprocessor.preprocess_reviews()
 
-endPreprocessingTime = datetime.datetime.now()
-print("Preprocessing completed at: ", endPreprocessingTime)
+endprocessingTime = datetime.datetime.now()
+print("Preprocessing completed at: ", endprocessingTime)
 
-print("Total time taken for preprocessing ", (endPreprocessingTime - startPreprocessingTime).total_seconds())
+print("Total time taken for preprocessing: ", (endprocessingTime - startprocessingTime).total_seconds())

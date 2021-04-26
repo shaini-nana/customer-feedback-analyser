@@ -49,7 +49,7 @@ class AccuracyCalculator:
         Path(dirPath).mkdir(parents=True, exist_ok=True)
         self.store_accuracy_values(dirPath + "/accuracy.csv", 'weighted', f1_weighted, precision_weighted, recall_weighted)
 
-accuracyCalculator = AccuracyCalculator("mcdonalds")
+accuracyCalculator = AccuracyCalculator("pizza-hut")
 
 accuracyCalculator.read_accuracy_values()
 accuracyCalculator.read_accuracy_values_advance()

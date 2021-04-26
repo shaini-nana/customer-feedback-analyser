@@ -1,5 +1,6 @@
 import json
 import os
+import datetime
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import csv
@@ -75,6 +76,15 @@ class Scraper:
                     (index/self.base_urls.__len__())*100, index, base_url))
 
 
-scraper = Scraper("the-cheesecake-factory")
+startprocessingTime = datetime.datetime.now()
+print("Scraping started at: ", startprocessingTime)
+
+scraper = Scraper("mcdonalds")
 scraper.get_review_web_links()
 scraper.get_scraped_data()
+
+endprocessingTime = datetime.datetime.now()
+print("Scraping completed at: ", endprocessingTime)
+
+print("Total time taken for scraping: ", (endprocessingTime - startprocessingTime).total_seconds())
+

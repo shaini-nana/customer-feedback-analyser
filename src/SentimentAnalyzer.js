@@ -267,6 +267,9 @@ const getOverallReviewAnalytics = (pathToFile, pathToStore, reviewsToAnalyze, ac
               .writeRecords(data)
               .then(()=> console.log('The overall analytical scores written successfully'));
           });
+          const endprocessingTime = new Date().getTime();
+          console.log("Overall processing completed at: ", endprocessingTime);
+          console.log("Total time taken: ", (endprocessingTime - startprocessingTime));
         })
     });
 };
@@ -346,9 +349,16 @@ const getFoodItemsReviewAnalytics = (readStream, writeStream) => {
         csvWriter
           .writeRecords(data)
           .then(()=> console.log('The detail analytical scores written successfully'));
+
+        const endprocessingTime = new Date().getTime();
+        console.log("Detail processing completed at: ", endprocessingTime);
+        console.log("Total time taken: ", (endprocessingTime - startprocessingTime));
       });
   }
 };
+
+const startprocessingTime = new Date().getTime();
+console.log("Processing started at: ", startprocessingTime);
 
 // getting the overall analytics on all available reviews
 getOverallReviewAnalytics(pathToOverallAnalytics, basePathToAnalyticalScores, reviewsToBeAnalyzed, reviewAccuraciesToAnalyze, overallAnalyticalScores, basePathForAccuracyOfReviews, basePathForAccuracyOfReviews_final);
