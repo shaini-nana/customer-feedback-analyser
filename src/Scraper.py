@@ -79,7 +79,7 @@ class Scraper:
 startprocessingTime = datetime.datetime.now()
 print("Scraping started at: ", startprocessingTime)
 
-scraper = Scraper("mcdonalds")
+scraper = Scraper("hilton")
 scraper.get_review_web_links()
 scraper.get_scraped_data()
 

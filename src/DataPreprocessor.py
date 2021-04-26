@@ -25,7 +25,7 @@ class DataPreprocessor:
     def __init__(self, businessName):
         self.selectedReviewsFile = businessName
         self.scrapeLocation = '../reviews/scrapedReviews/' + self.selectedReviewsFile + '.csv'
-        self.foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"]
+        self.foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "cheese"]
         self.foodReviews = []
         self.foodReviewsAdvance = []
         self.overallReviews = []
@@ -158,7 +158,7 @@ class DataPreprocessor:
 startprocessingTime = datetime.datetime.now()
 print("Preprocessing started at: ", startprocessingTime)
 
-dataPreprocessor = DataPreprocessor("mcdonalds")
+dataPreprocessor = DataPreprocessor("pizza-hut")
 dataPreprocessor.preprocess_reviews()
 
 endprocessingTime = datetime.datetime.now()

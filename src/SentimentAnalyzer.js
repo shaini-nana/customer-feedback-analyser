@@ -6,13 +6,13 @@ const { get } = require('lodash');
 
 AWS.config.loadFromPath('./config.json');
 
-const selectedReviewsFile = "mcdonalds";
+const selectedReviewsFile = "pizza-hut";
 
 // pizza-hut
-// const foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "cheese"];
+const foodItems = ["chicken", "beef", "pepperoni", "wings", "bread sticks", "cheese"];
 
 // mcdonalds
-const foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"];
+// const foodItems = ["burger", "chicken", "beef", "fries", "big mac", "cheese"];
 
 // subway
 // const foodItems = ["chicken", "beef", "cheese", "sandwich"];
