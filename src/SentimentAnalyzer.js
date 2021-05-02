@@ -1,6 +1,7 @@
 const fs = require('fs');
 const parse = require('csv-parse');
 const AWS = require("aws-sdk");
+const{ backOff } = require('exponential-backoff');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const { get } = require('lodash');
 
@@ -67,31 +68,24 @@ const comprehend = new AWS.Comprehend({
   apiVersion: '2017-11-27'
 });
 
-const params = {
-  LanguageCode: 'en',
-  Text: ''
+const callComprehendWithBackOff = (params)=>{
+  return backOff(() => comprehend.detectSentiment(params).promise());
 };
 
 const analyzeSentiments = reviews => {
-
   const results = [];
-
   for (let index = 0; index < reviews.length; index ++) {
+    let params = {
+      LanguageCode: 'en',
+      Text: ''
+    };
     params.Text = reviews[index];
     results.push(
-      comprehend.detectSentiment(params).promise().then(async data => {
+      callComprehendWithBackOff(params).then(async data => {
         data.reviewId = (reviews[index].split('|'))[0];
         return data;
       }).catch(error => {
-        console.log(`Error occurred Retrying again. Error: ${JSON.stringify(error.stack)}`);
-        comprehend.detectSentiment(params).promise().then(async data => {
-          console.log("Success on second time");
-          data.reviewId = (reviews[index].split('|'))[0];
-          return data;
-        }).catch(err => {
-          console.log(`Consecutively call failing to AWS Comprehend. Error: ${JSON.stringify(err.stack)}`);
-          return err;
-        });
+        console.log(`Error occurred in analysing sentiments via AWS: ${JSON.stringify(error.stack)}`);
       })
     );
   }
